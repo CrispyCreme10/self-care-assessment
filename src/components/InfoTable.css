@@ -2,6 +2,8 @@
   border-collapse: collapse;
   width: 100%;
   margin-bottom: 30px;
+  background-color: white;
+  border-radius: 5px;
 }
 
 .table-info-section tr {
