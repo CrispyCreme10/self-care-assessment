@@ -45,31 +45,31 @@ const InfoTable = ({categoryName, lineItems}) => {
 
   return (
     <table className="table-info-section">
-        <thead>
-          <tr>
-            <th><span>1</span><span>2</span><span>3</span></th>
-            <th>★</th>
-            <th>{categoryName}</th>
-          </tr>
-        </thead>
-        <tbody>
-          {lineItems.map((lineItem, index) => (
-              <tr key={index}>
-                <td>
-                  <div className="three-selector">
-                    <div className="selector-shared three-selector-left" onClick={e => handleLeftSelector(e, index)}></div>
-                    <div className="selector-shared three-selector-mid" onClick={e => handleMidSelector(e, index)}></div>
-                    <div className="selector-shared three-selector-right" onClick={e => handleRightSelector(e, index)}></div>
-                  </div>
-                </td>
-                <td>
-                  <div className="selector-shared one-selector" onClick={e => handleStarSelector(e, index)}></div>
-                </td>
-                <td>{lineItem.description}</td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+      <thead>
+        <tr>
+          <th><span>1</span><span>2</span><span>3</span></th>
+          <th>★</th>
+          <th>{categoryName}</th>
+        </tr>
+      </thead>
+      <tbody>
+        {lineItems.map((lineItem, index) => (
+            <tr key={index}>
+              <td>
+                <div className="three-selector">
+                  <div className="selector-shared three-selector-left" onClick={e => handleLeftSelector(e, index)}></div>
+                  <div className="selector-shared three-selector-mid" onClick={e => handleMidSelector(e, index)}></div>
+                  <div className="selector-shared three-selector-right" onClick={e => handleRightSelector(e, index)}></div>
+                </div>
+              </td>
+              <td>
+                <div className="selector-shared one-selector" onClick={e => handleStarSelector(e, index)}></div>
+              </td>
+              <td>{lineItem.description}</td>
+            </tr>
+          ))}
+      </tbody>
+    </table>
   )
 }
 
