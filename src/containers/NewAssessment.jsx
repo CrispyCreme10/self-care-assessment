@@ -10,6 +10,10 @@ const NewAssessment = () => {
   // fetch all categories (returns array of strings containing all category names)
   // foreach category, fetch all lineitems associated with category (returns array of strings containing all lineitem values)
 
+  const [leftArrowEnabled, SetLeftArrowEnabled] = React.useState(false);
+  const [rightArrowEnabled, SetRightArrowEnabled] = React.useState(true);
+  const [carouselOrder, SetCarouselOrder] = React.useState(0);
+
   const lineItems1 = [
     {
       description: "Eat healthy foods"
@@ -175,52 +179,91 @@ const NewAssessment = () => {
     },
   ];
 
+  const moveCarouselLeft = () => {
+    if (leftArrowEnabled) {
+      SetCarouselOrder(prev => prev - 1);
+      SetLeftArrowEnabled(carouselOrder - 1 !== 0);
+      SetRightArrowEnabled(true);
+    }
+  }
+
+  const moveCarouselRight = () => {
+    if (rightArrowEnabled) {
+      SetCarouselOrder(prev => prev + 1);
+      SetLeftArrowEnabled(true);
+      SetRightArrowEnabled(carouselOrder + 1 < infoSections.length);
+    }
+  }
+
+  const infoSections = [
+    { categoryName: "Physical Self-Care", lineItems: lineItems1 },
+    { categoryName: "Psychological / Emotional Self-Care", lineItems: lineItems2 },
+    { categoryName: "Social Self-Care", lineItems: lineItems3 },
+    { categoryName: "Spiritual Self-Care", lineItems: lineItems4 },
+    { categoryName: "Professional Self-Care", lineItems: lineItems5 },
+
+  ]
+
+  const currentInfoSection = infoSections[carouselOrder - 1];
+
   return (
     <div className="NewAssessment">
-      <FontAwesomeIcon icon={faChevronLeft} className="arrows"/>
+      <div className="carousel">
+        <FontAwesomeIcon 
+          icon={faChevronLeft} 
+          className={leftArrowEnabled ? "arrows" : "arrows-disabled"}
+          onClick={() => moveCarouselLeft()} />
 
-      <div className="panel details-panel">
-        <h1>Self-Care Assessment</h1>
+        {carouselOrder === 0 &&
+          <div className="panel details-panel">
+            <h1>Self-Care Assessment</h1>
 
-        <div id="text">
-          <p><span>Self-care</span> activities are the things you do to maintain good health and improve well-being. You'll  find that many of these activities are things you already do as part of your normal routine.</p>
-          <p>In this assessment you will think about how frequently, or how well, you are performing different  self-care activities. The goal of this assessment is to help you learn about your self-care needs  by spotting patterns and recognizing areas of your life that need more attention.</p>
-          <p>There are no right or wrong answers on this assessment. There may be activities that you have  no interest in, and other activities may not be included. This list is not comprehensive, but serves  as a starting point for thinking about your self-care needs.</p>
-        </div>
+            <div id="text">
+              <p><span>Self-care</span> activities are the things you do to maintain good health and improve well-being. You'll  find that many of these activities are things you already do as part of your normal routine.</p>
+              <p>In this assessment you will think about how frequently, or how well, you are performing different  self-care activities. The goal of this assessment is to help you learn about your self-care needs  by spotting patterns and recognizing areas of your life that need more attention.</p>
+              <p>There are no right or wrong answers on this assessment. There may be activities that you have  no interest in, and other activities may not be included. This list is not comprehensive, but serves  as a starting point for thinking about your self-care needs.</p>
+            </div>
 
-        <div className="legend">
-          <div className="legend-row">
-            <span className="key">1</span>
-            <span className="desc-1">I do this poorly</span>
-            <span className="desc-2">I do this rarely or not at all</span>
+            <div className="legend">
+              <div className="legend-row">
+                <span className="key">1</span>
+                <span className="desc-1">I do this poorly</span>
+                <span className="desc-2">I do this rarely or not at all</span>
+              </div>
+              <div className="legend-row">
+                <span className="key">2</span>
+                <span className="desc-1">I do this OK</span>
+                <span className="desc-2">I do this sometimes</span>
+              </div>
+              <div className="legend-row">
+                <span className="key">3</span>
+                <span className="desc-1">I do this well</span>
+                <span className="desc-2">I do this often</span>
+              </div>
+              <div className="legend-row">
+                <span className="key">★</span>
+                <span className="desc-1">I would like to improve at this</span>
+                <span className="desc-2">I would like to do this more frequently</span>
+              </div>
+            </div>
           </div>
-          <div className="legend-row">
-            <span className="key">2</span>
-            <span className="desc-1">I do this OK</span>
-            <span className="desc-2">I do this sometimes</span>
+        }
+
+        {carouselOrder >= 1 &&
+          <div className="panel data-panel">
+            <InfoTable categoryName={currentInfoSection.categoryName} lineItems={currentInfoSection.lineItems} />          
           </div>
-          <div className="legend-row">
-            <span className="key">3</span>
-            <span className="desc-1">I do this well</span>
-            <span className="desc-2">I do this often</span>
-          </div>
-          <div className="legend-row">
-            <span className="key">★</span>
-            <span className="desc-1">I would like to improve at this</span>
-            <span className="desc-2">I would like to do this more frequently</span>
-          </div>
-        </div>
+        }
+
+        <FontAwesomeIcon 
+          icon={faChevronRight} 
+          className={rightArrowEnabled ? "arrows" : "arrows-disabled"} 
+          onClick={() => moveCarouselRight()} />`
       </div>
 
-      <FontAwesomeIcon icon={faChevronRight} className="arrows"/>
-
-      {/* <div className="panel data-panel">
-        <InfoTable categoryName={"Physical Self-Care"} lineItems={lineItems1} />
-        <InfoTable categoryName={"Psychological / Emotional Self-Care"} lineItems={lineItems2} />
-        <InfoTable categoryName={"Social Self-Care"} lineItems={lineItems3} />
-        <InfoTable categoryName={"Spiritual Self-Care"} lineItems={lineItems4} />
-        <InfoTable categoryName={"Professional Self-Care"} lineItems={lineItems5} />
-      </div> */}
+      {carouselOrder === infoSections.length &&
+        <button className="global-btn">Save</button>
+      }
 
     </div>
   );

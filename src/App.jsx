@@ -4,6 +4,7 @@ import NewAssessment from "./containers/NewAssessment";
 import Layout from "./components/Layout";
 import Home from "./containers/Home";
 import NoPage from "./components/NoPage";
+import React from 'react';
 
 function App() {
   return (

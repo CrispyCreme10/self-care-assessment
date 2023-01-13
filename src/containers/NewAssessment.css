@@ -5,19 +5,28 @@
 }
 
 .details-panel {
-  padding: 1rem 1rem;
+  padding: 1rem 2rem;
 }
 
 .data-panel {
-  overflow-y: scroll;
-  background-color: rgb(63, 63, 63);
-  padding: 20px 20px 0 20px;
+  padding: 2rem;
 }
 
 .NewAssessment {
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   padding: 0 1rem;
+  max-width: 70rem;
+  align-self: center;
+}
+
+.carousel {
+  display: flex;
+  flex-direction: row;
+}
+
+.NewAssessment .global-btn {
+  align-self: center;
 }
 
 .NewAssessment p span {
@@ -29,7 +38,13 @@
   align-self: center;
 }
 
-.arrows {
+.arrows-disabled {
+  font-size: 4rem;
+  align-self: center;
+  color: rgba(128, 128, 128);
+}
+
+.arrows:hover {
   cursor: pointer;
 }
 

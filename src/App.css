@@ -9,6 +9,11 @@ html, body, #root {
   height: 100%;
 }
 
+#root {
+  display: flex;
+  flex-direction: column;
+}
+
 .App {
   display: flex;
   justify-content: cent;
