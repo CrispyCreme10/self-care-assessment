@@ -1,5 +1,3 @@
-import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
 import InfoTable from "../components/InfoTable";
 
@@ -10,9 +8,7 @@ const NewAssessment = () => {
   // fetch all categories (returns array of strings containing all category names)
   // foreach category, fetch all lineitems associated with category (returns array of strings containing all lineitem values)
 
-  const [leftArrowEnabled, SetLeftArrowEnabled] = React.useState(false);
-  const [rightArrowEnabled, SetRightArrowEnabled] = React.useState(true);
-  const [carouselOrder, SetCarouselOrder] = React.useState(0);
+  const [sectionOrder, SetSectionOrder] = React.useState(0);
 
   const lineItems1 = [
     {
@@ -179,42 +175,30 @@ const NewAssessment = () => {
     },
   ];
 
-  const moveCarouselLeft = () => {
-    if (leftArrowEnabled) {
-      SetCarouselOrder(prev => prev - 1);
-      SetLeftArrowEnabled(carouselOrder - 1 !== 0);
-      SetRightArrowEnabled(true);
-    }
-  }
-
-  const moveCarouselRight = () => {
-    if (rightArrowEnabled) {
-      SetCarouselOrder(prev => prev + 1);
-      SetLeftArrowEnabled(true);
-      SetRightArrowEnabled(carouselOrder + 1 < infoSections.length);
-    }
-  }
-
   const infoSections = [
     { categoryName: "Physical Self-Care", lineItems: lineItems1 },
     { categoryName: "Psychological / Emotional Self-Care", lineItems: lineItems2 },
     { categoryName: "Social Self-Care", lineItems: lineItems3 },
     { categoryName: "Spiritual Self-Care", lineItems: lineItems4 },
     { categoryName: "Professional Self-Care", lineItems: lineItems5 },
-
   ]
 
-  const currentInfoSection = infoSections[carouselOrder - 1];
+  const currentInfoSection = infoSections[sectionOrder - 1];
 
   return (
     <div className="NewAssessment">
-      <div className="carousel">
-        <FontAwesomeIcon 
-          icon={faChevronLeft} 
-          className={leftArrowEnabled ? "arrows" : "arrows-disabled"}
-          onClick={() => moveCarouselLeft()} />
+      {/* <div className="table-contents">
+        <div id="description">Preface</div>
+        {infoSections.map(infoSection => (
+          <div>
+            {infoSection.categoryName}
+          </div>
+        ))}
+      </div> */}
 
-        {carouselOrder === 0 &&
+      <div className="content">
+
+        {sectionOrder === 0 &&
           <div className="panel details-panel">
             <h1>Self-Care Assessment</h1>
 
@@ -249,19 +233,14 @@ const NewAssessment = () => {
           </div>
         }
 
-        {carouselOrder >= 1 &&
+        {sectionOrder >= 1 &&
           <div className="panel data-panel">
             <InfoTable categoryName={currentInfoSection.categoryName} lineItems={currentInfoSection.lineItems} />          
           </div>
         }
-
-        <FontAwesomeIcon 
-          icon={faChevronRight} 
-          className={rightArrowEnabled ? "arrows" : "arrows-disabled"} 
-          onClick={() => moveCarouselRight()} />`
       </div>
 
-      {carouselOrder === infoSections.length &&
+      {sectionOrder === infoSections.length &&
         <button className="global-btn">Save</button>
       }
 

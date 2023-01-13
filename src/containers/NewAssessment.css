@@ -14,13 +14,12 @@
 
 .NewAssessment {
   display: flex;
-  flex-direction: column;
   padding: 0 1rem;
   max-width: 70rem;
   align-self: center;
 }
 
-.carousel {
+.NewAssessment.content {
   display: flex;
   flex-direction: row;
 }
