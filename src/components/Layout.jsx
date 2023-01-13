@@ -4,16 +4,10 @@ import './Layout.css';
 const Layout = () => {
   return (
     <>
-      <nav>
-        <ul>
-          <li>
-            <Link to="/">Home</Link>
-          </li>
-          <li>
-            <Link to="/new-assessment">New Assessment</Link>
-          </li>
-        </ul>
-      </nav>
+      <div className="Layout">
+        <Link to="/" className="item">Home</Link>
+        <Link to="/new-assessment" className="item">New Assessment</Link>
+      </div>
 
       <Outlet />
     </>

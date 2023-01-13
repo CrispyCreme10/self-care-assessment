@@ -1,3 +1,5 @@
+import { faChevronLeft, faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React from 'react';
 import InfoTable from "../components/InfoTable";
 
@@ -175,6 +177,8 @@ const NewAssessment = () => {
 
   return (
     <div className="NewAssessment">
+      <FontAwesomeIcon icon={faChevronLeft} className="arrows"/>
+
       <div className="panel details-panel">
         <h1>Self-Care Assessment</h1>
 
@@ -208,13 +212,15 @@ const NewAssessment = () => {
         </div>
       </div>
 
-      <div className="panel data-panel">
+      <FontAwesomeIcon icon={faChevronRight} className="arrows"/>
+
+      {/* <div className="panel data-panel">
         <InfoTable categoryName={"Physical Self-Care"} lineItems={lineItems1} />
         <InfoTable categoryName={"Psychological / Emotional Self-Care"} lineItems={lineItems2} />
         <InfoTable categoryName={"Social Self-Care"} lineItems={lineItems3} />
         <InfoTable categoryName={"Spiritual Self-Care"} lineItems={lineItems4} />
         <InfoTable categoryName={"Professional Self-Care"} lineItems={lineItems5} />
-      </div>
+      </div> */}
 
     </div>
   );
