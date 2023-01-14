@@ -1,62 +1,51 @@
 import React from 'react'
 import './InfoTable.css';
 
-const InfoTable = (props) => {
-
+const InfoTable = ({categoryName, lineItems, updateLineItem}) => {
   const selectedClass = "selector-shared-selected";
 
-  const handleLeftSelector = (e) => {
+  const handleLeftSelector = (e, index) => {
     const div = e.currentTarget;
 
-    if (div.classList.contains(selectedClass)) {
-      div.classList.remove(selectedClass);
-    } else {
-      div.classList.add(selectedClass);
-    }
+    const nextSibling = div.nextElementSibling;
+    const nextNextSibling = nextSibling.nextElementSibling;
+    div.classList.add(selectedClass);
+    nextSibling.classList.remove(selectedClass);
+    nextNextSibling.classList.remove(selectedClass);
+    updateLineItem("rank", 1, index);
   }
 
-  const handleMidSelector = (e) => {
+  const handleMidSelector = (e, index) => {
     const div = e.currentTarget;
 
     const prevSibling = div.previousElementSibling;
-    if (!prevSibling) return;
-
-    if (div.classList.contains(selectedClass)) {
-      prevSibling.classList.remove(selectedClass);
-      div.classList.remove(selectedClass);
-    } else {
-      prevSibling.classList.add(selectedClass);
-      div.classList.add(selectedClass);
-    }
+    const nextSibling = div.nextElementSibling;
+    prevSibling.classList.add(selectedClass);
+    div.classList.add(selectedClass);
+    nextSibling.classList.remove(selectedClass);
+    updateLineItem("rank", 2, index);
   }
 
-  const handleRightSelector = (e) => {
+  const handleRightSelector = (e, index) => {
     const div = e.currentTarget;
 
     const prevSibling = div.previousElementSibling;
-    if (!prevSibling) return;
-
     const prevPrevSibling = prevSibling.previousElementSibling;
-    if (!prevPrevSibling) return;
-
-    if (div.classList.contains(selectedClass)) {
-      prevPrevSibling.classList.remove(selectedClass);
-      prevSibling.classList.remove(selectedClass);
-      div.classList.remove(selectedClass);
-    } else {
-      prevPrevSibling.classList.add(selectedClass);
-      prevSibling.classList.add(selectedClass);
-      div.classList.add(selectedClass);
-    }
+    prevPrevSibling.classList.add(selectedClass);
+    prevSibling.classList.add(selectedClass);
+    div.classList.add(selectedClass);
+    updateLineItem("rank", 3, index);
   }
 
-  const handleStarSelector = (e) => {
+  const handleStarSelector = (e, index) => {
     const div = e.currentTarget;
 
     if (div.classList.contains(selectedClass)) {
       div.classList.remove(selectedClass);
+      updateLineItem("star", false, index);
     } else {
       div.classList.add(selectedClass);
+      updateLineItem("star", true, index);
     }
   }
 
@@ -66,21 +55,21 @@ const InfoTable = (props) => {
         <tr>
           <th><span>1</span><span>2</span><span>3</span></th>
           <th>★</th>
-          <th>{props.categoryName}</th>
+          <th>{categoryName}</th>
         </tr>
       </thead>
       <tbody>
-        {props.lineItems.map((lineItem, index) => (
+        {lineItems.map((lineItem, index) => (
             <tr key={index}>
               <td>
                 <div className="three-selector">
-                  <div className="selector-shared three-selector-left" onClick={handleLeftSelector}></div>
-                  <div className="selector-shared three-selector-mid" onClick={handleMidSelector}></div>
-                  <div className="selector-shared three-selector-right" onClick={handleRightSelector}></div>
+                  <div className="selector-shared three-selector-left" onClick={e => handleLeftSelector(e, index)}></div>
+                  <div className="selector-shared three-selector-mid" onClick={e => handleMidSelector(e, index)}></div>
+                  <div className="selector-shared three-selector-right" onClick={e => handleRightSelector(e, index)}></div>
                 </div>
               </td>
               <td>
-                <div className="selector-shared one-selector" onClick={handleStarSelector}></div>
+                <div className="selector-shared one-selector" onClick={e => handleStarSelector(e, index)}></div>
               </td>
               <td>{lineItem.description}</td>
             </tr>

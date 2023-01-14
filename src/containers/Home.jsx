@@ -3,7 +3,7 @@ import React from 'react'
 const Home = () => {
   return (
     <div className="Home">
-      HOME
+      Area is under construction
     </div>
   )
 }

@@ -4,11 +4,6 @@ import InfoTable from "../components/InfoTable";
 import './NewAssessment.css'
 
 const NewAssessment = () => {
-  // fetch flow
-  // fetch all categories (returns array of strings containing all category names)
-  // foreach category, fetch all lineitems associated with category (returns array of strings containing all lineitem values)
-
-  const [sectionOrder, SetSectionOrder] = React.useState(0);
 
   const lineItems1 = [
     {
@@ -183,67 +178,78 @@ const NewAssessment = () => {
     { categoryName: "Professional Self-Care", lineItems: lineItems5 },
   ]
 
-  const currentInfoSection = infoSections[sectionOrder - 1];
+  const [categoryDetails, setCategoryDetails] = React.useState(infoSections.map(infoSection => 
+    infoSection.lineItems.map(lineItem => {
+        return {
+          categoryName: infoSection.categoryName,
+          desc: lineItem.description,
+          rank: 0, // 0-3
+          star: false
+  }})));
+
+  const updateLineItem = (prop, value, index) => {
+    const old = categoryDetails[index];
+    const updatedLineItem = { ...old, [prop]: value }
+    const lineItemsClone = [...categoryDetails];
+    lineItemsClone[index] = updatedLineItem;
+    setCategoryDetails(lineItemsClone);
+  }
+
+  const saveFormData = () => {
+    // send form data state to backend
+  }
+
+  const clearFormData = () => {
+
+  }
 
   return (
     <div className="NewAssessment">
-      {/* <div className="table-contents">
-        <div id="description">Preface</div>
-        {infoSections.map(infoSection => (
-          <div>
-            {infoSection.categoryName}
-          </div>
-        ))}
-      </div> */}
-
       <div className="content">
+        <div className="panel details-panel">
+          <h1>Self-Care Assessment</h1>
 
-        {sectionOrder === 0 &&
-          <div className="panel details-panel">
-            <h1>Self-Care Assessment</h1>
+          <div id="text">
+            <p><span>Self-care</span> activities are the things you do to maintain good health and improve well-being. You'll  find that many of these activities are things you already do as part of your normal routine.</p>
+            <p>In this assessment you will think about how frequently, or how well, you are performing different  self-care activities. The goal of this assessment is to help you learn about your self-care needs  by spotting patterns and recognizing areas of your life that need more attention.</p>
+            <p>There are no right or wrong answers on this assessment. There may be activities that you have  no interest in, and other activities may not be included. This list is not comprehensive, but serves  as a starting point for thinking about your self-care needs.</p>
+          </div>
 
-            <div id="text">
-              <p><span>Self-care</span> activities are the things you do to maintain good health and improve well-being. You'll  find that many of these activities are things you already do as part of your normal routine.</p>
-              <p>In this assessment you will think about how frequently, or how well, you are performing different  self-care activities. The goal of this assessment is to help you learn about your self-care needs  by spotting patterns and recognizing areas of your life that need more attention.</p>
-              <p>There are no right or wrong answers on this assessment. There may be activities that you have  no interest in, and other activities may not be included. This list is not comprehensive, but serves  as a starting point for thinking about your self-care needs.</p>
+          <div className="legend">
+            <div className="legend-row">
+              <span className="key">1</span>
+              <span className="desc-1">I do this poorly</span>
+              <span className="desc-2">I do this rarely or not at all</span>
             </div>
-
-            <div className="legend">
-              <div className="legend-row">
-                <span className="key">1</span>
-                <span className="desc-1">I do this poorly</span>
-                <span className="desc-2">I do this rarely or not at all</span>
-              </div>
-              <div className="legend-row">
-                <span className="key">2</span>
-                <span className="desc-1">I do this OK</span>
-                <span className="desc-2">I do this sometimes</span>
-              </div>
-              <div className="legend-row">
-                <span className="key">3</span>
-                <span className="desc-1">I do this well</span>
-                <span className="desc-2">I do this often</span>
-              </div>
-              <div className="legend-row">
-                <span className="key">★</span>
-                <span className="desc-1">I would like to improve at this</span>
-                <span className="desc-2">I would like to do this more frequently</span>
-              </div>
+            <div className="legend-row">
+              <span className="key">2</span>
+              <span className="desc-1">I do this OK</span>
+              <span className="desc-2">I do this sometimes</span>
+            </div>
+            <div className="legend-row">
+              <span className="key">3</span>
+              <span className="desc-1">I do this well</span>
+              <span className="desc-2">I do this often</span>
+            </div>
+            <div className="legend-row">
+              <span className="key">★</span>
+              <span className="desc-1">I would like to improve at this</span>
+              <span className="desc-2">I would like to do this more frequently</span>
             </div>
           </div>
-        }
+        </div>
 
-        {sectionOrder >= 1 &&
-          <div className="panel data-panel">
-            <InfoTable categoryName={currentInfoSection.categoryName} lineItems={currentInfoSection.lineItems} />          
-          </div>
-        }
+        <div className="panel data-panel">
+          {infoSections.map((infoSection, index) => {
+            return <InfoTable categoryName={infoSection.categoryName} lineItems={infoSection.lineItems} updateLineItem={updateLineItem} />
+          })}
+        </div>
       </div>
 
-      {sectionOrder === infoSections.length &&
-        <button className="global-btn">Save</button>
-      }
-
+      <div className="button-container">
+        <button className="global-btn" onClick={saveFormData}>Save</button>
+        <button className="global-btn" onClick={clearFormData}>Clear All</button>
+      </div>
     </div>
   );
 }

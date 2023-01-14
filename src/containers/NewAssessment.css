@@ -17,6 +17,7 @@
   padding: 0 1rem;
   max-width: 70rem;
   align-self: center;
+  flex-direction: column;
 }
 
 .NewAssessment.content {
