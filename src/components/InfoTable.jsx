@@ -63,13 +63,21 @@ const InfoTable = ({categoryName, lineItems, updateLineItem}) => {
             <tr key={index}>
               <td>
                 <div className="three-selector">
-                  <div className="selector-shared three-selector-left" onClick={e => handleLeftSelector(e, index)}></div>
-                  <div className="selector-shared three-selector-mid" onClick={e => handleMidSelector(e, index)}></div>
-                  <div className="selector-shared three-selector-right" onClick={e => handleRightSelector(e, index)}></div>
+                  <div 
+                    className={"selector-shared three-selector-left" + (lineItem.rank >= 1 ? ` ${selectedClass}` : "")} 
+                    onClick={e => handleLeftSelector(e, index)} />
+                  <div 
+                    className={"selector-shared three-selector-mid" + (lineItem.rank >= 2 ? ` ${selectedClass}` : "")} 
+                    onClick={e => handleMidSelector(e, index)}></div>
+                  <div 
+                    className={"selector-shared three-selector-right" + (lineItem.rank >= 3 ? ` ${selectedClass}` : "")}
+                    onClick={e => handleRightSelector(e, index)}></div>
                 </div>
               </td>
               <td>
-                <div className="selector-shared one-selector" onClick={e => handleStarSelector(e, index)}></div>
+                <div 
+                  className={"selector-shared one-selector" + (lineItem.star ? ` ${selectedClass}` : "")}
+                  onClick={e => handleStarSelector(e, index)}></div>
               </td>
               <td>{lineItem.description}</td>
             </tr>
