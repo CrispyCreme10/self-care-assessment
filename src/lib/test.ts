@@ -1,4 +1,15 @@
-const lineItems1 = [
+import { Category, Form } from "./types";
+
+interface LineItem {
+  description: string
+}
+
+interface InfoSection {
+  categoryName: string,
+  lineItems: LineItem[]
+}
+
+const lineItems1: LineItem[] = [
   {
     description: "Eat healthy foods"
   },
@@ -31,7 +42,7 @@ const lineItems1 = [
   },
 ];
 
-const lineItems2 = [
+const lineItems2: LineItem[] = [
   {
     description: "Take time off from work, school, and other obligations"
   },
@@ -67,7 +78,7 @@ const lineItems2 = [
   },
 ];
 
-const lineItems3 = [
+const lineItems3: LineItem[] = [
   {
     description: "Spend time with people who I like"
   },
@@ -100,7 +111,7 @@ const lineItems3 = [
   },
 ];
 
-const lineItems4 = [
+const lineItems4: LineItem[] = [
   {
     description: "Spend time in nature"
   },
@@ -130,7 +141,7 @@ const lineItems4 = [
   },
 ];
 
-const lineItems5 = [
+const lineItems5: LineItem[] = [
   {
     description: "Improve my professional skills"
   },
@@ -163,7 +174,7 @@ const lineItems5 = [
   },
 ];
 
-const infoSections = [
+const infoSections: InfoSection[] = [
   { categoryName: "Physical Self-Care", lineItems: lineItems1 },
   { categoryName: "Psychological / Emotional Self-Care", lineItems: lineItems2 },
   { categoryName: "Social Self-Care", lineItems: lineItems3 },
@@ -171,12 +182,17 @@ const infoSections = [
   { categoryName: "Professional Self-Care", lineItems: lineItems5 },
 ]
 
-const createAssObj = (infoSection, isRandom) => {
+const createCategory = (infoSection: InfoSection, categoryId: number, isRandom: boolean): Category => {
   return {
-    categoryName: infoSection.categoryName,
-    lineItems: infoSection.lineItems.map(lineItem => {
+    id: -1,
+    createAt: new Date,
+    text: infoSection.categoryName,
+    questions: infoSection.lineItems.map((lineItem, index) => {
       return {
-        description: lineItem.description,
+        id: index,
+        createAt: new Date(),
+        categoryId: categoryId,
+        text: lineItem.description,
         rank: isRandom ? Math.floor(Math.random() * (3 - 1) + 1) : 0, // 0-3
         star: isRandom ? Math.random() < 0.5 : false // true or false
       }
@@ -192,19 +208,20 @@ const generateRandomDate = () => {
   return new Date(rndYear, rndMonth, rndDay);
 }
 
-const generateAssessment = (createAt, rankVal, starVal) => {
+const generateForm = (createAt: Date | null, isRandom: boolean): Form => {
   return {
+    id: -1,
     createAt: createAt,
-    categories: infoSections.map(infoSection => {
-      return createAssObj(infoSection, rankVal, starVal);
+    categories: infoSections.map((infoSection, index) => {
+      return createCategory(infoSection, index, isRandom);
     })
   }
 }
 
 export const generateRandomAssessment = () => {
-  return generateAssessment(generateRandomDate(), true);
+  return generateForm(generateRandomDate(), true);
 }
 
 export const generateBlankAssessment = () => {
-  return generateAssessment(null, false);
+  return generateForm(null, false);
 }

@@ -2,23 +2,30 @@ import React from 'react';
 import InfoTable from "../components/InfoTable";
 import { useLocation } from 'react-router-dom'
 import './Assessment.css'
+import { Form } from '../lib/types';
 
-const Assessment = ({readOnly}) => {
+interface FormProps {
+  readOnly: boolean
+}
+
+export default function Assessment({readOnly}: FormProps) {
   const location = useLocation();
   const { details } = location.state || {};
-  const [categoryDetails, setCategoryDetails] = React.useState(details);
+  const [form, setForm] = React.useState<Form>(details);
 
-  const updateLineItem = (prop, value, index) => {
-    const old = categoryDetails[index];
-    const updatedLineItem = { ...old, [prop]: value }
-    const lineItemsClone = [...categoryDetails];
-    lineItemsClone[index] = updatedLineItem;
-    setCategoryDetails(lineItemsClone);
+  const updateQuestion = (prop: string, value: any, index: number): void => {
+    const old = form.categories[index];
+    const updatedQuestion = { ...old, [prop]: value }
+    const categoriesClone = [...form.categories];
+    categoriesClone[index] = updatedQuestion;
+    form.categories = categoriesClone
+    setForm(prev => form);
   }
 
   const saveFormData = () => {
     // send form data state to backend
-    console.log(categoryDetails);
+    // iterate through each question
+    
   }
 
   const clearFormData = () => {
@@ -26,10 +33,10 @@ const Assessment = ({readOnly}) => {
   }
 
   return (
-    <div className="NewAssessment">
+    <div className="NewForm">
       <div className="content">
         <div className="panel details-panel">
-          <h1>Self-Care Assessment</h1>
+          <h1>Self-Care Form</h1>
           {details.createAt &&
             <h4>Created: {details.createAt.toDateString()}</h4>
           }
@@ -65,12 +72,11 @@ const Assessment = ({readOnly}) => {
         </div>
 
         <div className="panel data-panel">
-          {categoryDetails.categories.map((category, index) => {
+          {form.categories.map((category, index) => {
             return <InfoTable
                       key={index}
-                      categoryName={category.categoryName} 
-                      lineItems={category.lineItems} 
-                      updateLineItem={updateLineItem} />
+                      category={category} 
+                      updateQuestion={updateQuestion} />
           })}
         </div>
       </div>
@@ -85,5 +91,3 @@ const Assessment = ({readOnly}) => {
     </div>
   );
 }
-
-export default Assessment

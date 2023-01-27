@@ -1,6 +1,6 @@
 import React from "react";
 import { Outlet, Link } from "react-router-dom";
-import {generateBlankAssessment as gba} from "../modules/test.js"
+import { generateBlankAssessment } from "../lib/test";
 import './Layout.css';
 
 const Layout = () => {
@@ -11,7 +11,7 @@ const Layout = () => {
         <Link 
           to="/new-assessment" 
           className="item"
-          state={{ details: gba() }}>
+          state={{ details: generateBlankAssessment() }}>
             New Assessment
         </Link>
       </div>

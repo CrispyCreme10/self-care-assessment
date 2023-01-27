@@ -1,15 +1,22 @@
 import React from 'react'
 import { Link } from "react-router-dom";
-import './AssessmentCard.css'
+import { Form } from '../lib/types';
+import './FormCard.css'
 
-const AssessmentCard = ({id, assessmentDetails, timeSinceLastAss}) => {
+interface FormCardProps {
+  id: number,
+  formDetails: Form,
+  timeSinceLastAss: string
+}
+
+const FormCard = ({id, formDetails, timeSinceLastAss}: FormCardProps) => {
   const getAvgRank = () => {
     let count = 0;
     let total = 0;
-    assessmentDetails.categories.forEach(category => 
-      category.lineItems.forEach(lineItem => {
+    formDetails.categories.forEach(category => 
+      category.questions.forEach(question => {
         count++;
-        total += lineItem.rank;
+        total += question.rank;
       })
     )
     return total / count;
@@ -18,9 +25,9 @@ const AssessmentCard = ({id, assessmentDetails, timeSinceLastAss}) => {
   const getTotalStars = () => {
     let count = 0;
     let total = 0;
-    assessmentDetails.categories.forEach(category => 
-      category.lineItems.forEach(lineItem => {
-        if (lineItem.star) {
+    formDetails.categories.forEach(category => 
+      category.questions.forEach(question => {
+        if (question.star) {
           count++;
         }
         total++
@@ -34,13 +41,13 @@ const AssessmentCard = ({id, assessmentDetails, timeSinceLastAss}) => {
       <Link 
         to="/view-assessment" 
         className="img-container" 
-        state={{ details: assessmentDetails }}>
+        state={{ details: formDetails }}>
         <img src="https://wallpapercave.com/wp/1rY39i5.jpg" alt={`assessment #${id}`}/>
         <div className="centered">Click to View</div>
       </Link>
       <div className="content">
         <span className="label">Created</span>
-        <span className="value">{assessmentDetails.createAt.toDateString()}</span>
+        <span className="value">{formDetails.createAt?.toDateString()}</span>
         <span className="label">Average Rank</span>
         <span className="value">{getAvgRank()}</span>
         <span className="label">Starred</span>
@@ -53,4 +60,4 @@ const AssessmentCard = ({id, assessmentDetails, timeSinceLastAss}) => {
   )
 }
 
-export default AssessmentCard
+export default FormCard

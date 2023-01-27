@@ -1,10 +1,9 @@
 import './App.css';
 import { BrowserRouter, Routes, Route } from "react-router-dom";
-import Assessment from "./containers/Assessment";
 import Layout from "./components/Layout";
 import Home from "./containers/Home";
 import NoPage from "./components/NoPage";
-import React from 'react';
+import Assessment from './containers/Assessment';
 
 function App() {
   return (

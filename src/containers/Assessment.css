@@ -12,7 +12,7 @@
   padding: 2rem;
 }
 
-.NewAssessment {
+.NewForm {
   display: flex;
   padding: 0 1rem;
   max-width: 70rem;
@@ -20,16 +20,16 @@
   flex-direction: column;
 }
 
-.NewAssessment.content {
+.NewForm.content {
   display: flex;
   flex-direction: row;
 }
 
-.NewAssessment .global-btn {
+.NewForm .global-btn {
   align-self: center;
 }
 
-.NewAssessment p span {
+.NewForm p span {
   font-weight: 700;
 }
 
