@@ -24,10 +24,11 @@ export default function Assessment({readOnly}: FormProps) {
     setForm(prev => form);
   }
 
-  const saveFormData = () => {
+  async function saveFormData() {
     // send form data state to backend
     // iterate through each question
-    
+    let formId: number = await createForm()
+
   }
 
   const clearFormData = () => {
@@ -92,4 +93,22 @@ export default function Assessment({readOnly}: FormProps) {
       
     </div>
   );
+}
+
+async function createForm(): Promise<number> {
+  let userId = 1
+  let body
+  const requestOptions = {method: 'POST'}
+
+  try {
+    let response = await fetch(`http://localhost:5001/form/${userId}`, requestOptions)
+    body = await response.json()
+
+    return body[0].FormId
+  }
+  catch(error) {
+    console.log(error)
+  }
+
+  return body[0].FormId
 }

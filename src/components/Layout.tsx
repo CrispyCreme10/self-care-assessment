@@ -3,38 +3,6 @@ import { Outlet, Link } from "react-router-dom";
 import { Category, Form, Question } from "../lib/types";
 import './../css/Layout.css';
 
-async function getCategories(): Promise<Category[]> {
-  let body
-  try {
-    let response = await fetch('http://localhost:5001/GetCategories')
-    body = await response.json()
-    
-    return body
-    
-  }
-  catch(error){
-    console.log(error)
-  }
-  
-  return body
-}
-
-
-async function getQuestions(): Promise<Question[]> {
-  let body
-  try {
-    let response = await fetch('http://localhost:5001/GetQuestions')
-    body = await response.json()
-    
-    return body
-  }
-  catch(error){
-    console.log(error)
-  }
-
-  return body
-}
-
 const Layout = () => {
   const [form, setForm] = React.useState<Form>()
   useEffect(() => { generateBlankAssessment() }, [])
@@ -71,5 +39,37 @@ const Layout = () => {
     </>
   )
 };
+
+async function getCategories(): Promise<Category[]> {
+  let body
+  try {
+    let response = await fetch('http://localhost:5001/GetCategories')
+    body = await response.json()
+    
+    return body
+    
+  }
+  catch(error){
+    console.log(error)
+  }
+  
+  return body
+}
+
+
+async function getQuestions(): Promise<Question[]> {
+  let body
+  try {
+    let response = await fetch('http://localhost:5001/GetQuestions')
+    body = await response.json()
+    
+    return body
+  }
+  catch(error){
+    console.log(error)
+  }
+
+  return body
+}
 
 export default Layout
