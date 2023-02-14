@@ -1,7 +1,7 @@
 import React from 'react';
 import InfoTable from "../components/InfoTable";
 import { useLocation } from 'react-router-dom'
-import './Assessment.css'
+import './../css/Assessment.css'
 import { Form } from '../lib/types';
 
 interface FormProps {
@@ -13,19 +13,22 @@ export default function Assessment({readOnly}: FormProps) {
   const { details } = location.state || {};
   const [form, setForm] = React.useState<Form>(details);
 
+  console.log(details)
+
   const updateQuestion = (prop: string, value: any, index: number): void => {
-    const old = form.categories[index];
+    const old = form.Categories[index];
     const updatedQuestion = { ...old, [prop]: value }
-    const categoriesClone = [...form.categories];
+    const categoriesClone = [...form.Categories];
     categoriesClone[index] = updatedQuestion;
-    form.categories = categoriesClone
+    form.Categories = categoriesClone
     setForm(prev => form);
   }
 
-  const saveFormData = () => {
+  async function saveFormData() {
     // send form data state to backend
     // iterate through each question
-    
+    let formId: number = await createForm()
+
   }
 
   const clearFormData = () => {
@@ -37,8 +40,8 @@ export default function Assessment({readOnly}: FormProps) {
       <div className="content">
         <div className="panel details-panel">
           <h1>Self-Care Form</h1>
-          {details.createAt &&
-            <h4>Created: {details.createAt.toDateString()}</h4>
+          {details?.CreateAt &&
+            <h4>Created: {details?.CreateAt.toDateString()}</h4>
           }
 
           <div id="text">
@@ -72,7 +75,7 @@ export default function Assessment({readOnly}: FormProps) {
         </div>
 
         <div className="panel data-panel">
-          {form.categories.map((category, index) => {
+          {form.Categories?.map((category, index) => {
             return <InfoTable
                       key={index}
                       category={category} 
@@ -90,4 +93,22 @@ export default function Assessment({readOnly}: FormProps) {
       
     </div>
   );
+}
+
+async function createForm(): Promise<number> {
+  let userId = 1
+  let body
+  const requestOptions = {method: 'POST'}
+
+  try {
+    let response = await fetch(`http://localhost:5001/form/${userId}`, requestOptions)
+    body = await response.json()
+
+    return body[0].FormId
+  }
+  catch(error) {
+    console.log(error)
+  }
+
+  return body[0].FormId
 }
