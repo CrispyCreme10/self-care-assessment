@@ -2,7 +2,7 @@ import React, { useState, useEffect } from "react";
 import FormCard from "../components/FormCard";
 //import { generateRandomAssessment } from "../lib/test";
 import { Form } from "../lib/types";
-import "./Home.css";
+import "./../css/Home.css";
 
 const GET_FORMS_URL = "";
 

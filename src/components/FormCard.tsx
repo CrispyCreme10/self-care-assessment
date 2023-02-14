@@ -1,7 +1,7 @@
 import React from 'react'
 import { Link } from "react-router-dom";
 import { Form } from '../lib/types';
-import './FormCard.css'
+import './../css/FormCard.css'
 
 interface FormCardProps {
   id: number,

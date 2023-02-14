@@ -1,7 +1,7 @@
 import React, { useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { Category, Form, Question } from "../lib/types";
-import './Layout.css';
+import './../css/Layout.css';
 
 async function getCategories(): Promise<Category[]> {
   let body

@@ -1,9 +1,0 @@
-.Home {
-  display: flex;
-  justify-content: center;
-}
-
-.Home .card-container {
-  display: flex;
-  flex-wrap: wrap;
-}

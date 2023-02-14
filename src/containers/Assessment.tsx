@@ -1,7 +1,7 @@
 import React from 'react';
 import InfoTable from "../components/InfoTable";
 import { useLocation } from 'react-router-dom'
-import './Assessment.css'
+import './../css/Assessment.css'
 import { Form } from '../lib/types';
 
 interface FormProps {
