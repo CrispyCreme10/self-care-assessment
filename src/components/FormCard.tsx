@@ -13,8 +13,8 @@ const FormCard = ({id, formDetails, timeSinceLastAss}: FormCardProps) => {
   const getAvgRank = () => {
     let count = 0;
     let total = 0;
-    formDetails.categories.forEach(category => 
-      category.questions.forEach(question => {
+    formDetails.Categories.forEach(category => 
+      category.Questions.forEach(question => {
         count++;
         total += question.rank;
       })
@@ -25,8 +25,8 @@ const FormCard = ({id, formDetails, timeSinceLastAss}: FormCardProps) => {
   const getTotalStars = () => {
     let count = 0;
     let total = 0;
-    formDetails.categories.forEach(category => 
-      category.questions.forEach(question => {
+    formDetails.Categories.forEach(category => 
+      category.Questions.forEach(question => {
         if (question.star) {
           count++;
         }
@@ -47,7 +47,7 @@ const FormCard = ({id, formDetails, timeSinceLastAss}: FormCardProps) => {
       </Link>
       <div className="content">
         <span className="label">Created</span>
-        <span className="value">{formDetails.createAt?.toDateString()}</span>
+        <span className="value">{formDetails.CreateAt?.toDateString()}</span>
         <span className="label">Average Rank</span>
         <span className="value">{getAvgRank()}</span>
         <span className="label">Starred</span>

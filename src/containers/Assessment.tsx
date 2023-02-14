@@ -13,12 +13,14 @@ export default function Assessment({readOnly}: FormProps) {
   const { details } = location.state || {};
   const [form, setForm] = React.useState<Form>(details);
 
+  console.log(details)
+
   const updateQuestion = (prop: string, value: any, index: number): void => {
-    const old = form.categories[index];
+    const old = form.Categories[index];
     const updatedQuestion = { ...old, [prop]: value }
-    const categoriesClone = [...form.categories];
+    const categoriesClone = [...form.Categories];
     categoriesClone[index] = updatedQuestion;
-    form.categories = categoriesClone
+    form.Categories = categoriesClone
     setForm(prev => form);
   }
 
@@ -37,8 +39,8 @@ export default function Assessment({readOnly}: FormProps) {
       <div className="content">
         <div className="panel details-panel">
           <h1>Self-Care Form</h1>
-          {details.createAt &&
-            <h4>Created: {details.createAt.toDateString()}</h4>
+          {details?.CreateAt &&
+            <h4>Created: {details?.CreateAt.toDateString()}</h4>
           }
 
           <div id="text">
@@ -72,7 +74,7 @@ export default function Assessment({readOnly}: FormProps) {
         </div>
 
         <div className="panel data-panel">
-          {form.categories.map((category, index) => {
+          {form.Categories?.map((category, index) => {
             return <InfoTable
                       key={index}
                       category={category} 

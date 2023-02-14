@@ -182,46 +182,46 @@ const infoSections: InfoSection[] = [
   { categoryName: "Professional Self-Care", lineItems: lineItems5 },
 ]
 
-const createCategory = (infoSection: InfoSection, categoryId: number, isRandom: boolean): Category => {
-  return {
-    id: -1,
-    createAt: new Date,
-    text: infoSection.categoryName,
-    questions: infoSection.lineItems.map((lineItem, index) => {
-      return {
-        id: index,
-        createAt: new Date(),
-        categoryId: categoryId,
-        text: lineItem.description,
-        rank: isRandom ? Math.floor(Math.random() * (3 - 1) + 1) : 0, // 0-3
-        star: isRandom ? Math.random() < 0.5 : false // true or false
-      }
-    })
-  }
-}
+// const createCategory = (infoSection: InfoSection, categoryId: number, isRandom: boolean): Category => {
+//   return {
+//     CategoryId: -1,
+//     CreateAt: new Date,
+//     Category: infoSection.categoryName,
+//     questions: infoSection.lineItems.map((lineItem, index) => {
+//       return {
+//         id: index,
+//         createAt: new Date(),
+//         categoryId: categoryId,
+//         text: lineItem.description,
+//         rank: isRandom ? Math.floor(Math.random() * (3 - 1) + 1) : 0, // 0-3
+//         star: isRandom ? Math.random() < 0.5 : false // true or false
+//       }
+//     })
+//   }
+// }
 
-const generateRandomDate = () => {
-  const rndDay = Math.floor(Math.random() * (28 - 1) + 1);
-  const rndMonth = Math.floor(Math.random() * (12 - 1) + 1);
-  const rndYear = Math.floor(Math.random() * (2022 - 2000) + 2000);
+// const generateRandomDate = () => {
+//   const rndDay = Math.floor(Math.random() * (28 - 1) + 1);
+//   const rndMonth = Math.floor(Math.random() * (12 - 1) + 1);
+//   const rndYear = Math.floor(Math.random() * (2022 - 2000) + 2000);
 
-  return new Date(rndYear, rndMonth, rndDay);
-}
+//   return new Date(rndYear, rndMonth, rndDay);
+// }
 
-const generateForm = (createAt: Date | null, isRandom: boolean): Form => {
-  return {
-    id: -1,
-    createAt: createAt,
-    categories: infoSections.map((infoSection, index) => {
-      return createCategory(infoSection, index, isRandom);
-    })
-  }
-}
+// const generateForm = (createAt: Date | null, isRandom: boolean): Form => {
+//   return {
+//     FormId: -1,
+//     CreateAt: createAt,
+//     Categories: infoSections.map((infoSection, index) => {
+//       return createCategory(infoSection, index, isRandom);
+//     })
+//   }
+// }
 
-export const generateRandomAssessment = () => {
-  return generateForm(generateRandomDate(), true);
-}
+// export const generateRandomAssessment = () => {
+//   return generateForm(generateRandomDate(), true);
+// }
 
-export const generateBlankAssessment = () => {
-  return generateForm(null, false);
-}
+// export const generateBlankAssessment = () => {
+//   return generateForm(null, false);
+// }

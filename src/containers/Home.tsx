@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FormCard from "../components/FormCard";
-import { generateRandomAssessment } from "../lib/test";
+//import { generateRandomAssessment } from "../lib/test";
 import { Form } from "../lib/types";
 import "./Home.css";
 
@@ -10,7 +10,7 @@ const Home = () => {
   const [forms, setForms] = useState<Form[]>([]);
 
   const fetchForms = async () => {
-    setForms(testForms);
+    // setForms(testForms);
     // uncomment to use api code
     // const response = await fetch(GET_FORMS_URL);
     // const data = await response.json();
@@ -22,25 +22,25 @@ const Home = () => {
   }, [])
   
 
-  const testForms = (): Form[] => {
-    const list = [];
-    const numOfTestCards = 8;
-    for (let i = 0; i < numOfTestCards; i++) {
-      list.push(generateRandomAssessment());
-    }
-    return list.sort((a, b) => {
-      if (!a.createAt || !b.createAt)
-        return 0;
+  // const testForms = (): Form[] => {
+  //   const list = [];
+  //   const numOfTestCards = 8;
+  //   for (let i = 0; i < numOfTestCards; i++) {
+  //     list.push(generateRandomAssessment());
+  //   }
+  //   return list.sort((a, b) => {
+  //     if (!a.createAt || !b.createAt)
+  //       return 0;
 
-      return b.createAt.getTime() - a.createAt.getTime();
-    });
-  };
+  //     return b.createAt.getTime() - a.createAt.getTime();
+  //   });
+  // };
 
   const getTimeSinceLastAss = (forms: Form[], index: number) => {
     if (index + 1 >= forms.length) return "-";
 
-    const currDate = forms[index].createAt;
-    const nextDate = forms[index + 1].createAt;
+    const currDate = forms[index].CreateAt;
+    const nextDate = forms[index + 1].CreateAt;
     let output = "Error";
     if (!currDate || !nextDate)
       return output;

@@ -89,11 +89,11 @@ export default function InfoTable({
             <span>3</span>
           </th>
           <th>★</th>
-          <th>{category.text}</th>
+          <th>{category.Category}</th>
         </tr>
       </thead>
       <tbody>
-        {category.questions.map((question, index) => (
+        {category.Questions.map((question, index) => (
           <tr key={index}>
             <td>
               <div className="three-selector">
@@ -129,7 +129,7 @@ export default function InfoTable({
                 onClick={(e) => handleStarSelector(e, index)}
               ></div>
             </td>
-            <td>{question.text}</td>
+            <td>{question.Question}</td>
           </tr>
         ))}
       </tbody>
