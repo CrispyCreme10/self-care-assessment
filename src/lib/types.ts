@@ -4,7 +4,7 @@ export interface Question {
   CategoryId: number,
   CreateAt: Date | null,
   UpdatedAt: Date | null,
-  rank: number
+  rank: number,
   star: string
 }
 
@@ -22,4 +22,12 @@ export interface Form {
   CreateAt: Date | null,
   UpdatedAt: Date | null,
   Categories: Category[]
+}
+
+export interface UserData {
+  UserId: number, 
+  QuestionId: number, 
+  FormId: number, 
+  Answer: number, 
+  Improve: string
 }
