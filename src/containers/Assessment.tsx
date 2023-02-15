@@ -2,7 +2,7 @@ import React from 'react';
 import InfoTable from "../components/InfoTable";
 import { useLocation } from 'react-router-dom'
 import './../css/Assessment.css'
-import { Form } from '../lib/types';
+import { Category, Form, Question, UserData} from '../lib/types';
 
 interface FormProps {
   readOnly: boolean
@@ -13,22 +13,42 @@ export default function Assessment({readOnly}: FormProps) {
   const { details } = location.state || {};
   const [form, setForm] = React.useState<Form>(details);
 
-  console.log(details)
+  const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
+    let cat: Category = form.Categories.find(c => c.CategoryId == categoryId)!
+    let qu: Question = cat.Questions.find(q => q.QuestionId == questionId)!
 
-  const updateQuestion = (prop: string, value: any, index: number): void => {
-    const old = form.Categories[index];
-    const updatedQuestion = { ...old, [prop]: value }
-    const categoriesClone = [...form.Categories];
-    categoriesClone[index] = updatedQuestion;
-    form.Categories = categoriesClone
-    setForm(prev => form);
+    if(prop == "rank"){
+       qu.rank = value
+    } 
+    else {
+      qu.star = value
+    }
   }
 
   async function saveFormData() {
     // send form data state to backend
     // iterate through each question
     let formId: number = await createForm()
+    let userId = 2
 
+    form.Categories.forEach(category => {
+      category.Questions.forEach(question => {
+        if(question.star === undefined) {
+          question.star = 'N'
+        }
+
+        let data: UserData = {
+          UserId: userId,
+          QuestionId: question.QuestionId,
+          FormId: formId,
+          Answer: question.rank, 
+          Improve: question.star
+        }
+
+        //console.log(data)
+        addUserData(data)
+      })
+    })
   }
 
   const clearFormData = () => {
@@ -96,7 +116,7 @@ export default function Assessment({readOnly}: FormProps) {
 }
 
 async function createForm(): Promise<number> {
-  let userId = 1
+  let userId = 2
   let body
   const requestOptions = {method: 'POST'}
 
@@ -111,4 +131,29 @@ async function createForm(): Promise<number> {
   }
 
   return body[0].FormId
+}
+
+async function addUserData(userData: UserData): Promise<string> {
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(userData),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  }
+
+  console.log(requestOptions.body)
+
+  try {
+    const resposne = await fetch('http://localhost:5001/userData', requestOptions)
+    const body = await resposne.json()
+
+    return body
+  }
+  catch(error) {
+    console.log(error)
+  }
+
+  return "faild"
 }
