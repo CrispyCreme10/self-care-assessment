@@ -26,8 +26,6 @@ export default function Assessment({readOnly}: FormProps) {
   }
 
   async function saveFormData() {
-    // send form data state to backend
-    // iterate through each question
     let formId: number = await createForm()
     let userId = 2
 
@@ -35,6 +33,10 @@ export default function Assessment({readOnly}: FormProps) {
       category.Questions.forEach(question => {
         if(question.star === undefined) {
           question.star = 'N'
+        }
+
+        if(question.rank === undefined) {
+          question.rank = 0
         }
 
         let data: UserData = {
@@ -45,7 +47,6 @@ export default function Assessment({readOnly}: FormProps) {
           Improve: question.star
         }
 
-        //console.log(data)
         addUserData(data)
       })
     })
