@@ -27,13 +27,18 @@ const FormCard = ({id, formDetails, timeSinceLastAss}: FormCardProps) => {
     let total = 0;
     formDetails.Categories.forEach(category => 
       category.Questions.forEach(question => {
-        if (question.star) {
+        if (question.star === 'y') {
           count++;
         }
         total++
       })
     )
     return `${count} / ${total}`;
+  }
+
+  function getFormCreatedDate(): string {
+    const formCreateDate: Date = new Date(formDetails.CreatedDt)
+    return formCreateDate.toDateString()
   }
 
   return (
@@ -47,7 +52,7 @@ const FormCard = ({id, formDetails, timeSinceLastAss}: FormCardProps) => {
       </Link>
       <div className="content">
         <span className="label">Created</span>
-        <span className="value">{formDetails.CreateAt?.toDateString()}</span>
+        <span className="value">{getFormCreatedDate()}</span>
         <span className="label">Average Rank</span>
         <span className="value">{getAvgRank()}</span>
         <span className="label">Starred</span>

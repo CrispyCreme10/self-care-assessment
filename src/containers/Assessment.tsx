@@ -144,8 +144,6 @@ async function addUserData(userData: UserData): Promise<string> {
     },
   }
 
-  console.log(requestOptions.body)
-
   try {
     const resposne = await fetch('http://localhost:5001/userData', requestOptions)
     const body = await resposne.json()
