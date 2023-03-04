@@ -5,7 +5,7 @@ export interface Question {
   CreateDt: Date | null,
   UpdatedDt: Date | null,
   rank: number,
-  star: string
+  star: Boolean
 }
 
 export interface Category {
@@ -29,5 +29,5 @@ export interface UserData {
   QuestionId: number, 
   FormId: number, 
   Answer: number, 
-  Improve: string
+  Improve: Boolean
 }

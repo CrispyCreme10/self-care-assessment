@@ -17,14 +17,16 @@ const Home = () => {
     const categories: Category[] = await getCategories()
 
     let formData: UserData[]
-    let formCategories: Category[]
-    let categoryData: UserData[]
+    console.log(userData)
+    console.log(forms.length)
 
     forms.forEach(form => {
-      let formData = userData.filter(d => d.FormId === form.FormId)
+      console.log(form)
+      formData = userData.filter(d => d.FormId === form.FormId)
+      console.log(formData)
       buildForm(form, formData, questions, categories)
     })
-
+    
     setForms(forms)
   }
 
@@ -152,8 +154,11 @@ async function getUserData(userId: number): Promise<UserData[]> {
 function buildForm(form: Form, formData: UserData[], questions: Question[], categories: Category[]) {
   form.Categories = []
 
+  console.log(formData)
+
   questions.forEach(question => {
     let targetData: UserData = formData.find(d => question.QuestionId === d.QuestionId)!
+    console.log(formData.find(d => question.QuestionId === d.QuestionId)!)
     question.rank = targetData.Answer
     question.star = targetData.Improve
   })

@@ -32,7 +32,7 @@ export default function Assessment({readOnly}: FormProps) {
     form.Categories.forEach(category => {
       category.Questions.forEach(question => {
         if(question.star === undefined) {
-          question.star = 'N'
+          question.star = false
         }
 
         if(question.rank === undefined) {
