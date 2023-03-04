@@ -8,16 +8,16 @@ const Layout = () => {
   useEffect(() => { generateBlankAssessment() }, [])
 
   async function generateBlankAssessment()  {
-    const catigories: Category[] = await getCategories()
+    const categories: Category[] = await getCategories()
     const questions: Question[] = await getQuestions()
 
-    catigories.forEach(category => {
+    categories.forEach(category => {
       category.Questions = []
       const catigoryQuestions = questions.filter(question => question.CategoryId === category.CategoryId)
       if(catigoryQuestions)
         category.Questions = catigoryQuestions
     })
-    const newForm: Form = {FormId: -1, UserId: 0, Categories: catigories, CreateAt: new Date(), UpdatedAt: new Date()}
+    const newForm: Form = {FormId: -1, UserId: 0, Categories: categories, CreatedDt: new Date(), UpdateDt: new Date()}
     setForm(newForm)
   }
   

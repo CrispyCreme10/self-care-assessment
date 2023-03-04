@@ -2,25 +2,25 @@ export interface Question {
   QuestionId: number,
   Question: string
   CategoryId: number,
-  CreateAt: Date | null,
-  UpdatedAt: Date | null,
+  CreateDt: Date | null,
+  UpdatedDt: Date | null,
   rank: number,
-  star: string
+  star: Boolean
 }
 
 export interface Category {
   CategoryId: number,
   Category: string,
   Questions: Question[],
-  CreateAt: Date | null,
-  UpdatedAt: Date | null
+  CreateDt: Date | null,
+  UpdatedDt: Date | null
 }
 
 export interface Form {
   FormId: number,
   UserId: number,
-  CreateAt: Date | null,
-  UpdatedAt: Date | null,
+  CreatedDt: Date,
+  UpdateDt: Date,
   Categories: Category[]
 }
 
@@ -29,5 +29,5 @@ export interface UserData {
   QuestionId: number, 
   FormId: number, 
   Answer: number, 
-  Improve: string
+  Improve: Boolean
 }

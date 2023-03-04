@@ -32,7 +32,7 @@ export default function Assessment({readOnly}: FormProps) {
     form.Categories.forEach(category => {
       category.Questions.forEach(question => {
         if(question.star === undefined) {
-          question.star = 'N'
+          question.star = false
         }
 
         if(question.rank === undefined) {
@@ -143,8 +143,6 @@ async function addUserData(userData: UserData): Promise<string> {
       'Content-Type': 'application/json'
     },
   }
-
-  console.log(requestOptions.body)
 
   try {
     const resposne = await fetch('http://localhost:5001/userData', requestOptions)
