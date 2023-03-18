@@ -1,9 +1,27 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
-import { generateBlankAssessment } from "../lib/test";
-import './Layout.css';
+import { Category, Form, Question } from "../lib/types";
+import './../css/Layout.css';
 
 const Layout = () => {
+  const [form, setForm] = React.useState<Form>()
+  useEffect(() => { generateBlankAssessment() }, [])
+
+  async function generateBlankAssessment()  {
+    const categories: Category[] = await getCategories()
+    const questions: Question[] = await getQuestions()
+
+    categories.forEach(category => {
+      category.Questions = []
+      const catigoryQuestions = questions.filter(question => question.CategoryId === category.CategoryId)
+      if(catigoryQuestions)
+        category.Questions = catigoryQuestions
+    })
+    const newForm: Form = {FormId: -1, UserId: 0, Categories: categories, CreatedDt: new Date(), UpdateDt: new Date()}
+    setForm(newForm)
+  }
+  
+
   return (
     <>
       <div className="Layout">
@@ -11,7 +29,8 @@ const Layout = () => {
         <Link 
           to="/new-assessment" 
           className="item"
-          state={{ details: generateBlankAssessment() }}>
+          state={{ details: form}}
+        >
             New Assessment
         </Link>
       </div>
@@ -20,5 +39,37 @@ const Layout = () => {
     </>
   )
 };
+
+async function getCategories(): Promise<Category[]> {
+  let body
+  try {
+    let response = await fetch('http://localhost:5001/GetCategories')
+    body = await response.json()
+    
+    return body
+    
+  }
+  catch(error){
+    console.log(error)
+  }
+  
+  return body
+}
+
+
+async function getQuestions(): Promise<Question[]> {
+  let body
+  try {
+    let response = await fetch('http://localhost:5001/GetQuestions')
+    body = await response.json()
+    
+    return body
+  }
+  catch(error){
+    console.log(error)
+  }
+
+  return body
+}
 
 export default Layout

@@ -1,10 +1,10 @@
 import React from "react";
 import { Category } from "../lib/types";
-import "./InfoTable.css";
+import "./../css/InfoTable.css";
 
 interface InfoTableProps {
   category: Category;
-  updateQuestion: (prop: string, value: any, index: number) => void;
+  updateQuestion: (prop: string, value: any, questionId: number, categoryId: number) => void;
 }
 
 export default function InfoTable({
@@ -15,7 +15,8 @@ export default function InfoTable({
 
   const handleLeftSelector = (
     e: React.MouseEvent<HTMLDivElement>,
-    index: number
+    index: number,
+    categoryId: number
   ) => {
     const div = e.currentTarget;
 
@@ -26,14 +27,15 @@ export default function InfoTable({
         div.classList.add(selectedClass);
         nextSibling.classList.remove(selectedClass);
         nextNextSibling.classList.remove(selectedClass);
-        updateQuestion("rank", 1, index);
+        updateQuestion("rank", 1, index, categoryId);
       }
     }
   };
 
   const handleMidSelector = (
     e: React.MouseEvent<HTMLDivElement>,
-    index: number
+    index: number,
+    categoryId: number
   ) => {
     const div = e.currentTarget;
 
@@ -43,13 +45,14 @@ export default function InfoTable({
       prevSibling.classList.add(selectedClass);
       div.classList.add(selectedClass);
       nextSibling.classList.remove(selectedClass);
-      updateQuestion("rank", 2, index);
+      updateQuestion("rank", 2, index, categoryId);
     }
   };
 
   const handleRightSelector = (
     e: React.MouseEvent<HTMLDivElement>,
-    index: number
+    index: number,
+    categoryId: number
   ) => {
     const div = e.currentTarget;
 
@@ -60,22 +63,23 @@ export default function InfoTable({
         prevPrevSibling.classList.add(selectedClass);
         prevSibling.classList.add(selectedClass);
         div.classList.add(selectedClass);
-        updateQuestion("rank", 3, index);
+        updateQuestion("rank", 3, index, categoryId);
       }
     }
   };
   const handleStarSelector = (
     e: React.MouseEvent<HTMLDivElement>,
-    index: number
+    index: number,
+    categoryId: number
   ) => {
     const div = e.currentTarget;
 
     if (div.classList.contains(selectedClass)) {
       div.classList.remove(selectedClass);
-      updateQuestion("star", false, index);
+      updateQuestion("star", "N", index, categoryId);
     } else {
       div.classList.add(selectedClass);
-      updateQuestion("star", true, index);
+      updateQuestion("star", "Y", index, categoryId);
     }
   };
 
@@ -89,11 +93,11 @@ export default function InfoTable({
             <span>3</span>
           </th>
           <th>★</th>
-          <th>{category.text}</th>
+          <th>{category.Category}</th>
         </tr>
       </thead>
       <tbody>
-        {category.questions.map((question, index) => (
+        {category.Questions.map((question, index) => (
           <tr key={index}>
             <td>
               <div className="three-selector">
@@ -102,21 +106,21 @@ export default function InfoTable({
                     "selector-shared three-selector-left" +
                     (question.rank >= 1 ? ` ${selectedClass}` : "")
                   }
-                  onClick={(e) => handleLeftSelector(e, index)}
+                  onClick={(e) => handleLeftSelector(e, question.QuestionId, question.CategoryId)}
                 />
                 <div
                   className={
                     "selector-shared three-selector-mid" +
                     (question.rank >= 2 ? ` ${selectedClass}` : "")
                   }
-                  onClick={(e) => handleMidSelector(e, index)}
+                  onClick={(e) => handleMidSelector(e, question.QuestionId, question.CategoryId)}
                 ></div>
                 <div
                   className={
                     "selector-shared three-selector-right" +
                     (question.rank >= 3 ? ` ${selectedClass}` : "")
                   }
-                  onClick={(e) => handleRightSelector(e, index)}
+                  onClick={(e) => handleRightSelector(e, question.QuestionId, question.CategoryId)}
                 ></div>
               </div>
             </td>
@@ -126,10 +130,10 @@ export default function InfoTable({
                   "selector-shared one-selector" +
                   (question.star ? ` ${selectedClass}` : "")
                 }
-                onClick={(e) => handleStarSelector(e, index)}
+                onClick={(e) => handleStarSelector(e, question.QuestionId, question.CategoryId)}
               ></div>
             </td>
-            <td>{question.text}</td>
+            <td>{question.Question}</td>
           </tr>
         ))}
       </tbody>

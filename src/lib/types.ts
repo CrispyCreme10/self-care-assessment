@@ -1,21 +1,33 @@
 export interface Question {
-  id: number,
-  createAt: Date | null,
-  categoryId: number,
-  text: string,
+  QuestionId: number,
+  Question: string
+  CategoryId: number,
+  CreateDt: Date | null,
+  UpdatedDt: Date | null,
   rank: number,
-  star: boolean
+  star: Boolean
 }
 
 export interface Category {
-  id: number,
-  createAt: Date | null,
-  text: string,
-  questions: Question[]
+  CategoryId: number,
+  Category: string,
+  Questions: Question[],
+  CreateDt: Date | null,
+  UpdatedDt: Date | null
 }
 
 export interface Form {
-  id: number,
-  createAt: Date | null
-  categories: Category[]
+  FormId: number,
+  UserId: number,
+  CreatedDt: Date,
+  UpdateDt: Date,
+  Categories: Category[]
+}
+
+export interface UserData {
+  UserId: number, 
+  QuestionId: number, 
+  FormId: number, 
+  Answer: number, 
+  Improve: Boolean
 }

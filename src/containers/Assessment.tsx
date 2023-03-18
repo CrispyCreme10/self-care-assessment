@@ -1,8 +1,8 @@
 import React from 'react';
 import InfoTable from "../components/InfoTable";
 import { useLocation } from 'react-router-dom'
-import './Assessment.css'
-import { Form } from '../lib/types';
+import './../css/Assessment.css'
+import { Category, Form, Question, UserData} from '../lib/types';
 
 interface FormProps {
   readOnly: boolean
@@ -13,19 +13,43 @@ export default function Assessment({readOnly}: FormProps) {
   const { details } = location.state || {};
   const [form, setForm] = React.useState<Form>(details);
 
-  const updateQuestion = (prop: string, value: any, index: number): void => {
-    const old = form.categories[index];
-    const updatedQuestion = { ...old, [prop]: value }
-    const categoriesClone = [...form.categories];
-    categoriesClone[index] = updatedQuestion;
-    form.categories = categoriesClone
-    setForm(prev => form);
+  const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
+    let cat: Category = form.Categories.find(c => c.CategoryId == categoryId)!
+    let qu: Question = cat.Questions.find(q => q.QuestionId == questionId)!
+
+    if(prop == "rank"){
+       qu.rank = value
+    } 
+    else {
+      qu.star = value
+    }
   }
 
-  const saveFormData = () => {
-    // send form data state to backend
-    // iterate through each question
-    
+  async function saveFormData() {
+    let formId: number = await createForm()
+    let userId = 2
+
+    form.Categories.forEach(category => {
+      category.Questions.forEach(question => {
+        if(question.star === undefined) {
+          question.star = false
+        }
+
+        if(question.rank === undefined) {
+          question.rank = 0
+        }
+
+        let data: UserData = {
+          UserId: userId,
+          QuestionId: question.QuestionId,
+          FormId: formId,
+          Answer: question.rank, 
+          Improve: question.star
+        }
+
+        addUserData(data)
+      })
+    })
   }
 
   const clearFormData = () => {
@@ -37,8 +61,8 @@ export default function Assessment({readOnly}: FormProps) {
       <div className="content">
         <div className="panel details-panel">
           <h1>Self-Care Form</h1>
-          {details.createAt &&
-            <h4>Created: {details.createAt.toDateString()}</h4>
+          {details?.CreateAt &&
+            <h4>Created: {details?.CreateAt.toDateString()}</h4>
           }
 
           <div id="text">
@@ -72,7 +96,7 @@ export default function Assessment({readOnly}: FormProps) {
         </div>
 
         <div className="panel data-panel">
-          {form.categories.map((category, index) => {
+          {form.Categories?.map((category, index) => {
             return <InfoTable
                       key={index}
                       category={category} 
@@ -90,4 +114,45 @@ export default function Assessment({readOnly}: FormProps) {
       
     </div>
   );
+}
+
+async function createForm(): Promise<number> {
+  let userId = 2
+  let body
+  const requestOptions = {method: 'POST'}
+
+  try {
+    let response = await fetch(`http://localhost:5001/form/${userId}`, requestOptions)
+    body = await response.json()
+
+    return body[0].FormId
+  }
+  catch(error) {
+    console.log(error)
+  }
+
+  return body[0].FormId
+}
+
+async function addUserData(userData: UserData): Promise<string> {
+  const requestOptions = {
+    method: 'POST',
+    body: JSON.stringify(userData),
+    headers: {
+      'Accept': 'application/json',
+      'Content-Type': 'application/json'
+    },
+  }
+
+  try {
+    const resposne = await fetch('http://localhost:5001/userData', requestOptions)
+    const body = await resposne.json()
+
+    return body
+  }
+  catch(error) {
+    console.log(error)
+  }
+
+  return "faild"
 }
