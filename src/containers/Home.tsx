@@ -1,26 +1,24 @@
 import React, { useState, useEffect } from "react";
 import FormCard from "../components/FormCard";
-//import { generateRandomAssessment } from "../lib/test";
 import { Form, Category, Question, UserData } from "../lib/types";
 import "./../css/Home.css";
-
-const GET_FORMS_URL = "";
+import formBuilder from "../Services/BuildForms";
 
 const Home = () => {
   const [forms, setForms] = useState<Form[]>([]);
 
   async function buildUserForms() {
     const userId = 2
-    const forms: Form[] = await getUserForms(userId)
-    const userData: UserData[] = await getUserData(userId)
-    const questions: Question[] = await getQuestions()
-    const categories: Category[] = await getCategories()
+    const forms: Form[] = await formBuilder.getUserForms(userId)
+    const userData: UserData[] = await formBuilder.getUserData(userId)
+    const questions: Question[] = await formBuilder.getQuestions()
+    const categories: Category[] = await formBuilder.getCategories()
 
     let formData: UserData[]
 
     forms.forEach(form => {
       formData = userData.filter(d => d.FormId === form.FormId)
-      buildForm(form, formData, questions, categories)
+      formBuilder.buildForm(form, formData, questions, categories)
     })
     
     setForms(forms)
@@ -83,88 +81,5 @@ const Home = () => {
     </div>
   );
 };
-
-async function getUserForms(userId: number): Promise<Form[]> {
-  let body
-  try {
-    let response = await fetch(`http://localhost:5001/form/${userId}`)
-    body = await response.json()
-
-    return body
-  }
-  catch(error){
-    console.log(error)
-  }
-
-  return body
-}
-
-async function getCategories(): Promise<Category[]> {
-  let body
-  try {
-    let response = await fetch('http://localhost:5001/GetCategories')
-    body = await response.json()
-    
-    return body
-    
-  }
-  catch(error){
-    console.log(error)
-  }
-  
-  return body
-}
-
-async function getQuestions(): Promise<Question[]> {
-  let body
-  try {
-    let response = await fetch('http://localhost:5001/GetQuestions')
-    body = await response.json()
-    
-    return body
-  }
-  catch(error){
-    console.log(error)
-  }
-
-  return body
-}
-
-async function getUserData(userId: number): Promise<UserData[]> {
-  let body
-  try {
-    let response = await fetch(`http://localhost:5001/userData/${userId}`)
-    body = await response.json()
-    
-    return body
-  }
-  catch(error){
-    console.log(error)
-  }
-
-
-  return body
-  
-}
-
-function buildForm(form: Form, formData: UserData[], questions: Question[], categories: Category[]) {
-  form.Categories = []
-
-  questions.forEach(question => {
-    let targetData: UserData = formData.find(d => question.QuestionId === d.QuestionId)!
-    question.rank = targetData.Answer
-    question.star = targetData.Improve
-  })
-
-  categories.forEach(category => {
-    category.Questions = []
-    let categoryQuestions: Question[] = questions.filter(q => q.CategoryId === category.CategoryId)
-    category.Questions = categoryQuestions
-  })
-
-  form.Categories = categories
-
-  return form
-}
 
 export default Home;
