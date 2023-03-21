@@ -3,6 +3,7 @@ import InfoTable from "../components/InfoTable";
 import { useLocation } from 'react-router-dom'
 import './../css/Assessment.css'
 import { Category, Form, Question, UserData} from '../lib/types';
+import Config from "./../config"
 
 interface FormProps {
   readOnly: boolean
@@ -122,7 +123,7 @@ async function createForm(): Promise<number> {
   const requestOptions = {method: 'POST'}
 
   try {
-    let response = await fetch(`http://localhost:5001/form/${userId}`, requestOptions)
+    let response = await fetch(Config.createForm + userId, requestOptions)
     body = await response.json()
 
     return body[0].FormId
@@ -145,7 +146,7 @@ async function addUserData(userData: UserData): Promise<string> {
   }
 
   try {
-    const resposne = await fetch('http://localhost:5001/userData', requestOptions)
+    const resposne = await fetch(Config.createUserData, requestOptions)
     const body = await resposne.json()
 
     return body
