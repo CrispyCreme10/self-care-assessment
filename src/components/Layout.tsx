@@ -2,6 +2,7 @@ import React, { useEffect } from "react";
 import { Outlet, Link } from "react-router-dom";
 import { Category, Form, Question } from "../lib/types";
 import './../css/Layout.css';
+import Config from "./../config"
 
 const Layout = () => {
   const [form, setForm] = React.useState<Form>()
@@ -43,7 +44,7 @@ const Layout = () => {
 async function getCategories(): Promise<Category[]> {
   let body
   try {
-    let response = await fetch('http://localhost:5001/GetCategories')
+    let response = await fetch(Config.getCategories)
     body = await response.json()
     
     return body
@@ -60,7 +61,7 @@ async function getCategories(): Promise<Category[]> {
 async function getQuestions(): Promise<Question[]> {
   let body
   try {
-    let response = await fetch('http://localhost:5001/GetQuestions')
+    let response = await fetch(Config.getQuestions)
     body = await response.json()
     
     return body
