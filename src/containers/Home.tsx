@@ -3,6 +3,7 @@ import FormCard from "../components/FormCard";
 //import { generateRandomAssessment } from "../lib/test";
 import { Form, Category, Question, UserData } from "../lib/types";
 import "./../css/Home.css";
+import Config from "./../config"
 
 const GET_FORMS_URL = "";
 
@@ -87,7 +88,7 @@ const Home = () => {
 async function getUserForms(userId: number): Promise<Form[]> {
   let body
   try {
-    let response = await fetch(`http://localhost:5001/form/${userId}`)
+    let response = await fetch(Config.getForms + userId)
     body = await response.json()
 
     return body
@@ -102,7 +103,7 @@ async function getUserForms(userId: number): Promise<Form[]> {
 async function getCategories(): Promise<Category[]> {
   let body
   try {
-    let response = await fetch('http://localhost:5001/GetCategories')
+    let response = await fetch(Config.getCategories)
     body = await response.json()
     
     return body
@@ -118,7 +119,7 @@ async function getCategories(): Promise<Category[]> {
 async function getQuestions(): Promise<Question[]> {
   let body
   try {
-    let response = await fetch('http://localhost:5001/GetQuestions')
+    let response = await fetch(Config.getQuestions)
     body = await response.json()
     
     return body
@@ -133,7 +134,7 @@ async function getQuestions(): Promise<Question[]> {
 async function getUserData(userId: number): Promise<UserData[]> {
   let body
   try {
-    let response = await fetch(`http://localhost:5001/userData/${userId}`)
+    let response = await fetch(Config.getUserData + userId)
     body = await response.json()
     
     return body
