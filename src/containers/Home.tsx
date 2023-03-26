@@ -1,27 +1,25 @@
 import React, { useState, useEffect } from "react";
 import FormCard from "../components/FormCard";
-//import { generateRandomAssessment } from "../lib/test";
 import { Form, Category, Question, UserData } from "../lib/types";
 import "./../css/Home.css";
-import Config from "./../config"
-
-const GET_FORMS_URL = "";
+import FormApi from "../Services/FormApi";
+import FormBuilder from "../Services/FormBuilder";
 
 const Home = () => {
-  const [forms, setForms] = useState<Form[]>([]);
+  const [forms, setForms] = useState<Form[]>();
 
   async function buildUserForms() {
     const userId = 2
-    const forms: Form[] = await getUserForms(userId)
-    const userData: UserData[] = await getUserData(userId)
-    const questions: Question[] = await getQuestions()
-    const categories: Category[] = await getCategories()
+    const forms: Form[] = await FormApi.getUserForms(userId)
+    const userData: UserData[] = await FormApi.getUserData(userId)
+    const questions: Question[] = await FormApi.getQuestions()
+    const categories: Category[] = await FormApi.getCategories()
 
     let formData: UserData[]
 
     forms.forEach(form => {
       formData = userData.filter(d => d.FormId === form.FormId)
-      buildForm(form, formData, questions, categories)
+      FormBuilder.buildForm(form, formData, questions, categories)
     })
     
     setForms(forms)
@@ -70,7 +68,7 @@ const Home = () => {
   return (
     <div className="Home">
       <div className="card-container">
-        {forms.map((ass, index, arr) => {
+        {forms?.map((ass, index, arr) => {
           return (
             <FormCard
               key={index}
@@ -84,88 +82,5 @@ const Home = () => {
     </div>
   );
 };
-
-async function getUserForms(userId: number): Promise<Form[]> {
-  let body
-  try {
-    let response = await fetch(Config.getForms + userId)
-    body = await response.json()
-
-    return body
-  }
-  catch(error){
-    console.log(error)
-  }
-
-  return body
-}
-
-async function getCategories(): Promise<Category[]> {
-  let body
-  try {
-    let response = await fetch(Config.getCategories)
-    body = await response.json()
-    
-    return body
-    
-  }
-  catch(error){
-    console.log(error)
-  }
-  
-  return body
-}
-
-async function getQuestions(): Promise<Question[]> {
-  let body
-  try {
-    let response = await fetch(Config.getQuestions)
-    body = await response.json()
-    
-    return body
-  }
-  catch(error){
-    console.log(error)
-  }
-
-  return body
-}
-
-async function getUserData(userId: number): Promise<UserData[]> {
-  let body
-  try {
-    let response = await fetch(Config.getUserData + userId)
-    body = await response.json()
-    
-    return body
-  }
-  catch(error){
-    console.log(error)
-  }
-
-
-  return body
-  
-}
-
-function buildForm(form: Form, formData: UserData[], questions: Question[], categories: Category[]) {
-  form.Categories = []
-
-  questions.forEach(question => {
-    let targetData: UserData = formData.find(d => question.QuestionId === d.QuestionId)!
-    question.rank = targetData.Answer
-    question.star = targetData.Improve
-  })
-
-  categories.forEach(category => {
-    category.Questions = []
-    let categoryQuestions: Question[] = questions.filter(q => q.CategoryId === category.CategoryId)
-    category.Questions = categoryQuestions
-  })
-
-  form.Categories = categories
-
-  return form
-}
 
 export default Home;
