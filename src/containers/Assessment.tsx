@@ -3,7 +3,7 @@ import InfoTable from "../components/InfoTable";
 import { useLocation } from 'react-router-dom'
 import './../css/Assessment.css'
 import { Category, Form, Question, UserData} from '../lib/types';
-import Config from "./../config"
+import FormApi from '../Services/FormApi';
 
 interface FormProps {
   readOnly: boolean
@@ -12,7 +12,7 @@ interface FormProps {
 export default function Assessment({readOnly}: FormProps) {
   const location = useLocation();
   const { details } = location.state || {};
-  const [form, setForm] = React.useState<Form>(details);
+  const [form, SetForm] = React.useState<Form>(details);
 
   const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
     let cat: Category = form.Categories.find(c => c.CategoryId == categoryId)!
@@ -27,8 +27,8 @@ export default function Assessment({readOnly}: FormProps) {
   }
 
   async function saveFormData() {
-    let formId: number = await createForm()
-    let userId = 2
+    let userId = 2 //TODO: Delete when multi user supported
+    let formId: number = await FormApi.createForm(userId)
 
     form.Categories.forEach(category => {
       category.Questions.forEach(question => {
@@ -48,7 +48,7 @@ export default function Assessment({readOnly}: FormProps) {
           Improve: question.star
         }
 
-        addUserData(data)
+        FormApi.addUserData(data)
       })
     })
   }
@@ -115,45 +115,4 @@ export default function Assessment({readOnly}: FormProps) {
       
     </div>
   );
-}
-
-async function createForm(): Promise<number> {
-  let userId = 2
-  let body
-  const requestOptions = {method: 'POST'}
-
-  try {
-    let response = await fetch(Config.createForm + userId, requestOptions)
-    body = await response.json()
-
-    return body[0].FormId
-  }
-  catch(error) {
-    console.log(error)
-  }
-
-  return body[0].FormId
-}
-
-async function addUserData(userData: UserData): Promise<string> {
-  const requestOptions = {
-    method: 'POST',
-    body: JSON.stringify(userData),
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json'
-    },
-  }
-
-  try {
-    const resposne = await fetch(Config.createUserData, requestOptions)
-    const body = await resposne.json()
-
-    return body
-  }
-  catch(error) {
-    console.log(error)
-  }
-
-  return "faild"
 }
