@@ -21,5 +21,21 @@ function buildForm(form: Form, formData: UserData[], questions: Question[], cate
     return form
   }  
 
-export default { buildForm }
+function buildBlankForm(categories: Category[], questions: Question[]) {
+  const form: Form = {
+    FormId: 0,
+    UserId: 0,
+    CreatedDt: new Date, 
+    UpdateDt: new Date,
+    Categories: categories
+  }
+
+  categories.forEach(category => { 
+      category.Questions = questions.filter(q => q.CategoryId === category.CategoryId)
+  })
+
+  return form
+}
+
+export default { buildForm, buildBlankForm }
   
