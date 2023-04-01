@@ -1,9 +1,10 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import InfoTable from "../components/InfoTable";
 import { useLocation } from 'react-router-dom'
 import './../css/Assessment.css'
 import { Category, Form, Question, UserData} from '../lib/types';
 import FormApi from '../Services/FormApi';
+import FormBuilder from '../Services/FormBuilder';
 
 interface FormProps {
   readOnly: boolean
@@ -25,6 +26,19 @@ export default function Assessment({readOnly}: FormProps) {
       qu.star = value
     }
   }
+
+  async function buildForm() {
+    const categories: Category[] = await FormApi.getCategories()
+    const questions: Question[] = await FormApi.getQuestions()
+
+    const form: Form = await FormBuilder.buildBlankForm(categories, questions)
+
+    SetForm(form)
+  }
+
+  useEffect(() => {
+      buildForm()
+  }, [])
 
   async function saveFormData() {
     let userId = 2 //TODO: Delete when multi user supported
