@@ -4,6 +4,9 @@ import { Form, Category, Question, UserData } from "../lib/types";
 import "./../css/Home.css";
 import FormApi from "../Services/FormApi";
 import FormBuilder from "../Services/FormBuilder";
+import Table from 'react-bootstrap/Table';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import { Link } from "react-router-dom";
 
 const Home = () => {
   const [forms, setForms] = useState<Form[]>();
@@ -65,20 +68,74 @@ const Home = () => {
     return output;
   };
 
+  const getTotalStars = (assessment: Form) => {
+    let count = 0;
+    let total = 0;
+    assessment.Categories.forEach(category => 
+      category.Questions.forEach(question => {
+        if (question.star) {
+          count++;
+        }
+        total++
+      })
+    )
+    return `${count} / ${total}`;
+  }
+
+  const getAvgRank = (assessment: Form) => {
+    let count = 0;
+    let total = 0;
+    assessment.Categories.forEach(category => 
+      category.Questions.forEach(question => {
+        count++;
+        total += question.rank;
+      })
+    )
+    return total / count;
+  }
+
+  function getFormCreatedDate(assessment: Form): string {
+    const formCreateDate: Date = new Date(assessment.CreatedDt)
+    return formCreateDate.toDateString()
+  }
+
+
   return (
     <div className="Home">
       <div className="card-container">
-        {forms?.map((ass, index, arr) => {
-          return (
-            <FormCard
-              key={index}
-              id={index}
-              formDetails={ass}
-              timeSinceLastAss={getTimeSinceLastAss(arr, index)}
-            />
-          );
-        })}
-      </div>
+        <Table striped bordered hover>
+          <thead>
+            <tr>
+              <th>#</th>
+              <th>created</th>
+              <th>Average Rank</th>
+              <th>Total Stars</th>
+              <th>Time Since Last Assest</th>
+            </tr>
+          </thead>
+          <tbody>
+            {forms?.map((assestment, index, arr) => {
+              return (
+                <tr key={index}>
+                  <td>
+                    <Link
+                      to="/view-assessment" 
+                      state={{details: assestment}}
+                      >
+                      {index}
+                    </Link>
+                    </td>
+                  <td>{getFormCreatedDate(assestment)}</td>
+                  <td>{getAvgRank(assestment)}</td>
+                  <td>{getTotalStars(assestment)}</td>
+                  <td>{getTimeSinceLastAss(arr, index)}</td>
+                </tr>
+              )
+            })}
+          </tbody>
+        </Table>
+
+        </div>
     </div>
   );
 };
