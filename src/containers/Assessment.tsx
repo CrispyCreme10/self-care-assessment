@@ -41,7 +41,7 @@ export default function Assessment({readOnly}: FormProps) {
   }, [])
 
   async function saveFormData() {
-    let userId = 2 //TODO: Delete when multi user supported
+    let userId= 2 //TODO: Delete when multi user supported
     let formId: number = await FormApi.createForm(userId)
 
     form.Categories.forEach(category => {
@@ -61,6 +61,8 @@ export default function Assessment({readOnly}: FormProps) {
           Answer: question.rank, 
           Improve: question.star
         }
+
+        console.log("user data: ", data)
 
         FormApi.addUserData(data)
       })
