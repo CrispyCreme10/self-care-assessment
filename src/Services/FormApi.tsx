@@ -1,5 +1,5 @@
 import { Form, Category, Question, UserData } from './../lib/types'
-import Config from './../config'
+import Config from '../../config'
 
 async function getUserForms(userId: number): Promise<Form[]> {
     let body
@@ -91,10 +91,12 @@ async function addUserData(userData: UserData): Promise<string> {
       'Content-Type': 'application/json'
     },
   }
-
+  console.log('Body:', { body: requestOptions.body })
   try {
     const resposne = await fetch(Config.createUserData, requestOptions)
+    console.log('res: ', resposne)
     const body = await resposne.json()
+    console.log('Body: ', body)
 
     return body
   }
