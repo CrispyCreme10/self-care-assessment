@@ -1,6 +1,6 @@
 import React, {useEffect} from 'react';
 import InfoTable from "../components/InfoTable";
-import { useLocation } from 'react-router-dom'
+import { useLocation, useNavigate} from 'react-router-dom'
 import './../css/Assessment.css'
 import { Category, Form, Question, UserData} from '../lib/types';
 import FormApi from '../Services/FormApi';
@@ -14,7 +14,7 @@ export default function Assessment({readOnly}: FormProps) {
   const location = useLocation();
   const { details } = location.state || {};
   const [form, SetForm] = React.useState<Form>(details);
-
+  const navigate = useNavigate()
   const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
     let cat: Category = form.Categories.find(c => c.CategoryId == categoryId)!
     let qu: Question = cat.Questions.find(q => q.QuestionId == questionId)!
@@ -67,6 +67,9 @@ export default function Assessment({readOnly}: FormProps) {
         FormApi.addUserData(data)
       })
     })
+    
+    // go to home page
+    navigate('/') 
   }
 
   const clearFormData = () => {
