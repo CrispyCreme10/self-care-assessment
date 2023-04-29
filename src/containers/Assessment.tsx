@@ -15,6 +15,7 @@ export default function Assessment({readOnly}: FormProps) {
   const { details } = location.state || {};
   const [form, SetForm] = React.useState<Form>(details);
   const navigate = useNavigate()
+
   const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
     let cat: Category = form.Categories.find(c => c.CategoryId == categoryId)!
     let qu: Question = cat.Questions.find(q => q.QuestionId == questionId)!
@@ -31,9 +32,12 @@ export default function Assessment({readOnly}: FormProps) {
     const categories: Category[] = await FormApi.getCategories()
     const questions: Question[] = await FormApi.getQuestions()
 
-    const form: Form = await FormBuilder.buildBlankForm(categories, questions)
+    const form: Form = await FormBuilder.buildBlankForm(categories, details)
 
     SetForm(form)
+
+    console.log("form: ", form)
+    console.log('details: ', details)
   }
 
   useEffect(() => {
@@ -61,8 +65,6 @@ export default function Assessment({readOnly}: FormProps) {
           Answer: question.rank, 
           Improve: question.star
         }
-
-        console.log("user data: ", data)
 
         FormApi.addUserData(data)
       })

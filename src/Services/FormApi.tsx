@@ -91,12 +91,9 @@ async function addUserData(userData: UserData): Promise<string> {
       'Content-Type': 'application/json'
     },
   }
-  console.log('Body:', { body: requestOptions.body })
   try {
     const resposne = await fetch(Config.createUserData, requestOptions)
-    console.log('res: ', resposne)
     const body = await resposne.json()
-    console.log('Body: ', body)
 
     return body
   }

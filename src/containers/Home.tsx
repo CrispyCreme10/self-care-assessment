@@ -26,6 +26,7 @@ const Home = () => {
     })
     
     setForms(forms)
+    console.log('All Form: ', forms)
   }
 
   useEffect(() => {

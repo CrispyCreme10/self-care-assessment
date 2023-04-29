@@ -4,13 +4,10 @@ import { Form, Category, Question, UserData } from "../lib/types"
 function buildForm(form: Form, formData: UserData[], questions: Question[], categories: Category[]) {
     form.Categories = []
     
-    console.log("form data: ", formData) 
 
     questions.forEach(question => {
       let targetData: UserData = formData.find(d => question.QuestionId === d.QuestionId)!
       
-      console.log("target data: ", targetData)
-
       if(targetData.Answer != undefined) {
         question.rank = targetData.Answer
       } else {
