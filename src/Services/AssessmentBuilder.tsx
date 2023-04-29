@@ -1,65 +1,42 @@
-import { Form, Category, Question, UserData, Assessment, ResponseGoup } from "../lib/types"
+import { Form, Category, Question, UserData, Assessment, ResponseGoup, Response } from "../lib/types"
 
 
-function buildForm(form: Form, formData: UserData[], questions: Question[], categories: Category[]) {
-
-    form.Categories = []
-
-    questions.forEach(question => {
-      let targetData: UserData = formData.find(d => question.QuestionId === d.QuestionId)!
-      
-      if(targetData.Answer != undefined) {
-        question.rank = targetData.Answer
-      } else {
-        question.rank = 0
+function buildAssessment(userForm: Form, questions: Question[], categories: Category[], data: UserData[]): Assessment {
+  let rgs: ResponseGoup[] = []
+  
+  categories.forEach(category => {
+    let categoryQuestions: Question[] = questions.filter(q => q.CategoryId === category.CategoryId)
+    let r: Response[] = []
+    
+    categoryQuestions.forEach(question => {
+      let d: UserData = data.find(d => d.QuestionId === question.QuestionId)! // (!) protection of undefined 
+      let response: Response = {
+        QuestionId: question.QuestionId,
+        Question: question.Question,
+        CategoryId: question.CategoryId,
+        value: d.Answer,
+        stared: d.Improve
       }
       
-      if(targetData.Improve != undefined) {
-        question.star = targetData.Improve
-      }
-      else {
-        question.star = false
-      }
+      r.push(response)
     })
-  
-    categories.forEach(category => {
-      category.Questions = []
-      let categoryQuestions: Question[] = questions.filter(q => q.CategoryId === category.CategoryId)
-      category.Questions = categoryQuestions
-    })
-  
-    form.Categories = categories
-  
-    return form
-  }
+    
+    let rg: ResponseGoup = {
+      CategoryId: category.CategoryId,
+      Category: category.Category,
+      Responses: r
+    }
 
-function buildAssessment(userForm: Form, questions: Question[], categories: Category[], data: UserData[]) {
+    rgs.push(rg)
+  })
+
   let assessment: Assessment = {
     Form: userForm,
-    ResponseGroups: []
+    ResponseGroups: rgs
   }
-
-
-
-  return null
+  
+  return assessment
 }
 
-function buildBlankForm(categories: Category[], questions: Question[]) {
-
-  // const form: Form = {
-  //   FormId: 0,
-  //   UserId: 0,
-  //   CreatedDt: new Date, 
-  //   UpdateDt: new Date,
-  //   Categories: categories
-  // }
-
-  // categories.forEach(category => { 
-  //     category.Questions = questions.filter(q => q.CategoryId === category.CategoryId)
-  // })
-
-  // return form
-}
-
-export default { buildForm, buildBlankForm, buildAssessment }
+export default { buildAssessment }
   

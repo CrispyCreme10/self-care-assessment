@@ -44,5 +44,5 @@ export interface Response {
   Question: String,
   CategoryId: number, 
   value: number, 
-  started: Boolean
+  stared: Boolean
 }
