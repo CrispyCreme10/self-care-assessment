@@ -1,7 +1,8 @@
-import { Form, Category, Question, UserData } from "../lib/types"
+import { Form, Category, Question, UserData, Assessment, ResponseGoup } from "../lib/types"
 
 
 function buildForm(form: Form, formData: UserData[], questions: Question[], categories: Category[]) {
+
     form.Categories = []
 
     questions.forEach(question => {
@@ -30,23 +31,35 @@ function buildForm(form: Form, formData: UserData[], questions: Question[], cate
     form.Categories = categories
   
     return form
-  }  
-
-function buildBlankForm(categories: Category[], questions: Question[]) {
-  const form: Form = {
-    FormId: 0,
-    UserId: 0,
-    CreatedDt: new Date, 
-    UpdateDt: new Date,
-    Categories: categories
   }
 
-  categories.forEach(category => { 
-      category.Questions = questions.filter(q => q.CategoryId === category.CategoryId)
-  })
+function buildAssessment(userForm: Form, questions: Question[], categories: Category[], data: UserData[]) {
+  let assessment: Assessment = {
+    Form: userForm,
+    ResponseGroups: []
+  }
 
-  return form
+
+
+  return null
 }
 
-export default { buildForm, buildBlankForm }
+function buildBlankForm(categories: Category[], questions: Question[]) {
+
+  // const form: Form = {
+  //   FormId: 0,
+  //   UserId: 0,
+  //   CreatedDt: new Date, 
+  //   UpdateDt: new Date,
+  //   Categories: categories
+  // }
+
+  // categories.forEach(category => { 
+  //     category.Questions = questions.filter(q => q.CategoryId === category.CategoryId)
+  // })
+
+  // return form
+}
+
+export default { buildForm, buildBlankForm, buildAssessment }
   

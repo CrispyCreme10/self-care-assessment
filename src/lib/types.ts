@@ -29,20 +29,20 @@ export interface UserData {
 }
 
 export interface Assessment {
-  form: Form,
+  Form: Form,
   ResponseGroups: ResponseGoup[]
 }
 
 export interface ResponseGoup {
-  CatigoryId: number, 
-  Cateigory: string, 
+  CategoryId: number, 
+  Category: string, 
   Responses: Response[],
 }
 
 export interface Response {
   QuestionId: number
   Question: String,
-  CatigoryId: number, 
+  CategoryId: number, 
   value: number, 
-  started: boolean
+  started: Boolean
 }

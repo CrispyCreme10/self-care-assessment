@@ -1,4 +1,4 @@
-import buildForm from '../Services/AssessmentBuilder'
+import buildAssessment from '../Services/AssessmentBuilder'
 import {describe, expect, test} from '@jest/globals';
 import { Form, Category, Question, UserData, Assessment, Response, ResponseGoup } from "../lib/types"
 
@@ -747,6 +747,392 @@ let questons: Question[] = [
 		"UpdatedDt": new Date
 	}
 ]
+
+let expected: Assessment = {
+	Form: form,
+	ResponseGroups: [
+		{
+			CategoryId: 1,
+			Category: "Pyscial Self-Care",
+			Responses: [
+				{
+					QuestionId: 1,
+					Question: "Eat healthy food",
+					CategoryId: 1,
+					value: 1,
+					started: false
+				},
+				{
+					QuestionId: 2,
+					Question: "Take care of personal hygiene",
+					CategoryId: 3,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 3,
+					Question: "Exercise",
+					CategoryId: 1,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 4,
+					Question: "Wear cloths that help me feel good about myself",
+					CategoryId: 1,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 5,
+					Question: "Eat regularly",
+					CategoryId: 1,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 6,
+					Question: "Participate in fun activites (e.g. walking, swimming, dancing, sport)",
+					CategoryId: 1,
+					value: 2,
+					started: false
+				},
+				{
+					QuestionId: 7,
+					Question: "Get enough sleep",
+					CategoryId: 1,
+					value: 1,
+					started: false
+				},
+				{
+					QuestionId: 8,
+					Question: "Go to preventative medical appointment (e.g. checkups, teeth cleanings)",
+					CategoryId: 1,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 9,
+					Question: "Rest when sick",
+					CategoryId: 1,
+					value: 2,
+					started: false
+				},
+				{
+					QuestionId: 10,
+					Question: "Overall physical self-care",
+					CategoryId: 1,
+					value: 0,
+					started: true
+				},
+			]
+		},
+		{
+			CategoryId: 2,
+			Category: "Psychological/Emotional Self-Care",
+			Responses: [
+				{
+					QuestionId: 11,
+					Question: "Take time off from work, school, and other obligatons",
+					CategoryId: 2,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 12,
+					Question: "Participate in hobbies",
+					CategoryId: 2,
+					value: 1,
+					started: true 
+				},
+				{
+					QuestionId: 13,
+					Question: "Get away from distractions (e.g. phone, email)",
+					CategoryId: 2,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 14,
+					Question: "Learn new things, unrelated to work or school",
+					CategoryId: 2,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 15,
+					Question: "Exress my feelings in a healthy way (e.g. talking, creating art, journaling)",
+					CategoryId: 2,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 16,
+					Question: "Recognize my own strengths and achievements",
+					CategoryId: 2,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 17,
+					Question: "Go on vacations or day trips",
+					CategoryId: 2,
+					value: 1,
+					started: false
+				},
+				{
+					QuestionId: 18,
+					Question: "Do something comforting (e.ge rewatching a favorite movie, taking a long bath)",
+					CategoryId: 2,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 19,
+					Question: "Find reasons to laugh",
+					CategoryId: 2,
+					value: 2,
+					started: true
+				},
+				{
+					QuestionId: 20,
+					Question: "Talk about my problems",
+					CategoryId: 2,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 21,
+					Question: "Overall psychological and emotional self-care",
+					CategoryId: 2,
+					value: 1,
+					started: true
+				}
+			]
+		},
+		{
+			CategoryId: 3,
+			Category: "Social Self-Care",
+			Responses: [
+				{
+					QuestionId: 22,
+					Question: "Spend time with people who I like",
+					CategoryId: 3,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 23,
+					Question: "Call or write to friends and family who are far away",
+					CategoryId: 3,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 24,
+					Question: "Have stimulating conversations",
+					CategoryId: 3,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 25,
+					Question: "Meet new people",
+					CategoryId: 3,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 26,
+					Question: "Spend time alone with my romantic partner",
+					CategoryId: 3,
+					value: 1,
+					started: false
+				},
+				{
+					QuestionId: 27,
+					Question: "Ask others for help, when needed",
+					CategoryId: 3,
+					value: 3, 
+					started: false
+				},
+				{
+					QuestionId: 28,
+					Question: "Do enjoyable activities with other people",
+					CategoryId: 3,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 29,
+					Question: "Have intimate time with my romantic partner",
+					CategoryId: 3,
+					value: 1,
+					started: false
+				},
+				{
+					QuestionId: 30,
+					Question: "Keep in touch with old friends",
+					CategoryId: 3,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 31,
+					Question: "Overall social self-care",
+					CategoryId: 3,
+					value: 3,
+					started: false
+				},
+			]
+		},
+		{
+			CategoryId: 4,
+			Category: "Spiritual Self-Care",
+			Responses: [
+				{
+					QuestionId: 32,
+					Question: "Spend time in nature",
+					CategoryId: 4,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 33,
+					Question: "Meditate",
+					CategoryId: 4,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 34,
+					Question: "Pray",
+					CategoryId: 4,
+					value: 1,
+					started: false
+				},
+				{
+					QuestionId: 35,
+					Question: "Recognize the things that give meaning to my life",
+					CategoryId: 4,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 36,
+					Question: "Act in accordance with my morals and values",
+					CategoryId: 4,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 37,
+					Question: "Set aside time for thought and reflection",
+					CategoryId: 4,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 38,
+					Question: "Participate in a cuase that is important to me",
+					CategoryId: 4,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 39,
+					Question: "Appreciate art that is impactful to me (e.g. music, film, liteture)",
+					CategoryId: 4,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 40,
+					Question: "Overall spiritual self-care",
+					CategoryId: 4,
+					value: 1,
+					started: false
+				},
+			]
+		},
+		{
+			CategoryId: 5,
+			Category: "Professional Self-Care",
+			Responses: [
+				{
+					QuestionId: 41,
+					Question: "Improve my professional skills",
+					CategoryId: 5,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 42,
+					Question: "Say \"no\" to excessive new responsibilities",
+					CategoryId: 5,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 43,
+					Question: "Take on projects that are interesting or rewarding",
+					CategoryId: 5,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 44,
+					Question: "Learn new things related to my profession",
+					CategoryId: 5,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 45,
+					Question: "Make time to talk and build relationships with colleagues",
+					CategoryId: 5,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 46,
+					Question: "Take breaks during work",
+					CategoryId: 5,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 47,
+					Question: "Maintain balance between my professional and personal life",
+					CategoryId: 5,
+					value: 1,
+					started: true
+				},
+				{
+					QuestionId: 48,
+					Question: "Keep a comforable workspace that allows me to be successfuly",
+					CategoryId: 5,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 49,
+					Question: "Advocate for fair pay, benefits, and other needs",
+					CategoryId: 5,
+					value: 3,
+					started: false
+				},
+				{
+					QuestionId: 50,
+					Question: "Overall professional self-care",
+					CategoryId: 5,
+					value: 2,
+					started: false
+				}
+			]
+		}
+	]
+}
 
 describe('testing tests', () => {
     test('forcing a passed test', () => {
