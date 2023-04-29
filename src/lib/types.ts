@@ -4,14 +4,11 @@ export interface Question {
   CategoryId: number,
   CreateDt: Date | null,
   UpdatedDt: Date | null,
-  rank: number,
-  star: Boolean
 }
 
 export interface Category {
   CategoryId: number,
   Category: string,
-  Questions: Question[],
   CreateDt: Date | null,
   UpdatedDt: Date | null
 }
@@ -21,7 +18,6 @@ export interface Form {
   UserId: number,
   CreatedDt: Date,
   UpdateDt: Date,
-  Categories: Category[]
 }
 
 export interface UserData {
@@ -30,4 +26,23 @@ export interface UserData {
   FormId: number, 
   Answer: number, 
   Improve: Boolean
+}
+
+export interface Assessment {
+  form: Form,
+  ResponseGroups: ResponseGoup[]
+}
+
+export interface ResponseGoup {
+  CatigoryId: number, 
+  Cateigory: string, 
+  Responses: Response[],
+}
+
+export interface Response {
+  QuestionId: number
+  Question: String,
+  CatigoryId: number, 
+  value: number, 
+  started: boolean
 }

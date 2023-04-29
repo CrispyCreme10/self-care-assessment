@@ -4,7 +4,7 @@ import { useLocation, useNavigate} from 'react-router-dom'
 import './../css/Assessment.css'
 import { Category, Form, Question, UserData} from '../lib/types';
 import FormApi from '../Services/FormApi';
-import FormBuilder from '../Services/FormBuilder';
+import FormBuilder from '../Services/AssessmentBuilder';
 
 interface FormProps {
   readOnly: boolean
