@@ -1,6 +1,13 @@
 import { Form, Category, Question, UserData, Assessment, ResponseGoup, Response } from "../lib/types"
 
-
+/**
+ * Builds Assessment 
+ * @param userForm 
+ * @param questions 
+ * @param categories 
+ * @param data 
+ * @returns Assessment 
+ */
 function buildAssessment(userForm: Form, questions: Question[], categories: Category[], data: UserData[]): Assessment {
   let rgs: ResponseGoup[] = []
   

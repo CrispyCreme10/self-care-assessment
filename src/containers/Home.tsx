@@ -1,32 +1,41 @@
 import React, { useState, useEffect } from "react";
 import FormCard from "../components/FormCard";
-import { Form, Category, Question, UserData } from "../lib/types";
+import { Form, Category, Question, UserData, Assessment } from "../lib/types";
 import "./../css/Home.css";
 import FormApi from "../Services/FormApi";
-import FormBuilder from "../Services/FormBuilder";
 import Table from 'react-bootstrap/Table';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
+import AssessmentBuilder from "../Services/AssessmentBuilder";
 
 const Home = () => {
-  const [forms, setForms] = useState<Form[]>();
+  // TODO: Display Basic Analyse for the user
+  // TODO: Delete unneeded functions
+  // TODO: Refactor building a form
+
+  const [assessments, setAssessments] = useState<Assessment[]>();
 
   async function buildUserForms() {
-    const userId = 2
-    const forms: Form[] = await FormApi.getUserForms(userId)
-    const userData: UserData[] = await FormApi.getUserData(userId)
-    const questions: Question[] = await FormApi.getQuestions()
-    const categories: Category[] = await FormApi.getCategories()
+    // const userId = 2
+    // const forms: Form[] = await FormApi.getUserForms(userId)
+    // const userData: UserData[] = await FormApi.getUserData(userId)
+    // const questions: Question[] = await FormApi.getQuestions()
+    // const categories: Category[] = await FormApi.getCategories()
 
-    let formData: UserData[]
+    // let formData: UserData[] 
+    // let assessments: Assessment[] = []
 
-    forms.forEach(form => {
-      formData = userData.filter(d => d.FormId === form.FormId)
-      FormBuilder.buildForm(form, formData, questions, categories)
-    })
+    // forms.forEach(form => {
+    //   formData = userData.filter(d => d.FormId === form.FormId)
+    //   let assessment: Assessment = AssessmentBuilder.buildAssessment(form, questions, categories, userData)
+    //   assessments.push(assessment)
+    // })
     
-    setForms(forms)
-    console.log('All Form: ', forms)
+    // setAssessments(assessments)
+    // console.log('All Form: ', forms)
+
+    const test = await FormApi.getBasicAnalyse(2)
+    console.log('Test:', test)
   }
 
   useEffect(() => {
@@ -70,29 +79,29 @@ const Home = () => {
   };
 
   const getTotalStars = (assessment: Form) => {
-    let count = 0;
-    let total = 0;
-    assessment.Categories.forEach(category => 
-      category.Questions.forEach(question => {
-        if (question.star) {
-          count++;
-        }
-        total++
-      })
-    )
-    return `${count} / ${total}`;
-  }
+  //   let count = 0;
+  //   let total = 0;
+  //   assessment.Categories.forEach(category => 
+  //     category.Questions.forEach(question => {
+  //       if (question.star) {
+  //         count++;
+  //       }
+  //       total++
+  //     })
+  //   )
+  //   return `${count} / ${total}`;
+  // }
 
-  const getAvgRank = (assessment: Form) => {
-    let count = 0;
-    let total = 0;
-    assessment.Categories.forEach(category => 
-      category.Questions.forEach(question => {
-        count++;
-        total += question.rank;
-      })
-    )
-    return total / count;
+  // const getAvgRank = (assessment: Form) => {
+  //   let count = 0;
+  //   let total = 0;
+  //   assessment.Categories.forEach(category => 
+  //     category.Questions.forEach(question => {
+  //       count++;
+  //       total += question.rank;
+  //     })
+  //   )
+  //   return total / count;
   }
 
   function getFormCreatedDate(assessment: Form): string {
@@ -111,11 +120,11 @@ const Home = () => {
               <th>created</th>
               <th>Average Rank</th>
               <th>Total Stars</th>
-              <th>Time Since Last Assest</th>
+              <th>Date</th>
             </tr>
           </thead>
           <tbody>
-            {forms?.map((assestment, index, arr) => {
+            {/* {forms?.map((assestment, index, arr) => {
               return (
                 <tr key={index}>
                   <td>
@@ -132,7 +141,7 @@ const Home = () => {
                   <td>{getTimeSinceLastAss(arr, index)}</td>
                 </tr>
               )
-            })}
+            })} */}
           </tbody>
         </Table>
 

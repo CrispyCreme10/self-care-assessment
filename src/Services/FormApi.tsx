@@ -60,7 +60,6 @@ async function getUserData(userId: number): Promise<UserData[]> {
         console.log(error)
     }
     
-    
     return body        
 }
 
@@ -104,6 +103,27 @@ async function addUserData(userData: UserData): Promise<string> {
   return "faild"
 }
 
+/**
+ * Gets the Bacis Analyse for every from for a given user
+ * @param userId 
+ * @returns {BasicAnalyse[]}
+ */
+async function getBasicAnalyse(userId: number) {
+    let body
+    try {
+        let response = await fetch(Config.getAnalysis + userId)
+        body = await response.json()
+        
+        return body
+    }
+    catch(error){
+        console.log(error)
+    }
+    
+    return body        
+
+}
+
 
 export default {
   getCategories, 
@@ -111,5 +131,6 @@ export default {
   getUserData, 
   getUserForms, 
   createForm, 
-  addUserData
+  addUserData,
+  getBasicAnalyse
 }

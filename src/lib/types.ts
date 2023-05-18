@@ -30,19 +30,15 @@ export interface UserData {
 
 export interface Assessment {
   Form: Form,
-  ResponseGroups: ResponseGoup[]
-}
-
-export interface ResponseGoup {
-  CategoryId: number, 
-  Category: string, 
-  Responses: Response[],
+  responses: Response[]
 }
 
 export interface Response {
+  CategoryId: number, 
   QuestionId: number
   Question: String,
-  CategoryId: number, 
   value: number, 
   stared: Boolean
 }
+
+// TODO: Create interface to basic Analyse
