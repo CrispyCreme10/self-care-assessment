@@ -41,4 +41,9 @@ export interface Response {
   stared: Boolean
 }
 
-// TODO: Create interface to basic Analyse
+export interface BasicAnalyse {
+  FormId: number,
+  AverageRank: number, 
+  TotalStars: number,
+  CreatedDt: Date
+}
