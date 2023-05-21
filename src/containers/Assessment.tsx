@@ -32,9 +32,9 @@ export default function Assessment({readOnly}: FormProps) {
     const categories: Category[] = await FormApi.getCategories()
     const questions: Question[] = await FormApi.getQuestions()
 
-    const form: Form = await FormBuilder.buildBlankForm(categories, details)
+    //const form: Form = await FormBuilder.buildBlankForm(categories, details)
 
-    SetForm(form)
+//    SetForm(form)
 
     console.log("form: ", form)
     console.log('details: ', details)
