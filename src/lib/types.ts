@@ -39,7 +39,7 @@ export interface UserData {
   Improve: Boolean
 }
 
-export interface Response {
+export interface FormResponse {
   CategoryId: number, 
   QuestionId: number,
   Question: string, 

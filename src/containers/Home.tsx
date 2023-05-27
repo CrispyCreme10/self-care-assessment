@@ -1,12 +1,13 @@
 import React, { useState, useEffect } from "react";
 import FormCard from "../components/FormCard";
-import { Form, Category, BasicAnalyse, Response } from "../lib/types";
+import { Form, Category, BasicAnalyse, FormResponse } from "../lib/types";
 import "./../css/Home.css";
 import FormApi from "../Services/FormApi";
 import Table from 'react-bootstrap/Table';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
 import AssessmentBuilder from "../Services/AssessmentBuilder";
+import {expected} from '../tests/Form.test'
 
 const Home = () => {
   const [basicAnalyse, setBasicAnalyse] = useState<BasicAnalyse[]>()
@@ -17,16 +18,24 @@ const Home = () => {
   }
 
   //TODO: Implment
-  async function viewAssessment(formId: number){
+  async function viewAssessment(formId: number): Promise<Form> {
     let userId = 2
+    
+    if(formId == undefined) {
+      const form: Form = { FormId: 0, UserId: 0, CreatedDt: null, UpdateDt: null, Categories: [] }
+      return form
+    }
+    console.log('form id', formId)
 
-    const responses: Response[] = await FormApi.getAssessmentReponses(formId)
+    const responses: FormResponse[] = await FormApi.getAssessmentReponses(formId)
     const categories: Category[] = await FormApi.getCategories()
+
+    console.log('home/cat:', categories)
+    console.log('home/res:', responses)
 
     const form: Form = AssessmentBuilder.buildAssessment(categories, responses)
 
-    console.log('responses', responses)
-    console.log('Assessment', form)
+    console.log('home/Assessment', form)
 
     return form
   }
@@ -54,7 +63,7 @@ const Home = () => {
                   <td>
                     <Link
                       to="/view-assessment" 
-                      state={{details: viewAssessment(row.FormId)}}
+                      state={{details: row.FormId}}
                       >
                       {index}
                     </Link>

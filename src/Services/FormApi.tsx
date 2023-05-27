@@ -1,6 +1,11 @@
-import { Form, Category, Question, UserData, BasicAnalyse } from './../lib/types'
+import { Form, Category, Question, UserData, BasicAnalyse, FormResponse } from './../lib/types'
 import Config from '../../config'
 
+/**
+ * Gets all forms for a given user
+ * @param userId 
+ * @returns {Form[]}
+ */
 async function getUserForms(userId: number): Promise<Form[]> {
     let body
     try {
@@ -16,6 +21,10 @@ async function getUserForms(userId: number): Promise<Form[]> {
     return body
 }
 
+/**
+ * gets all caetories
+ * @returns {Category[]}
+ */
 async function getCategories(): Promise<Category[]> {
     let body
     try {
@@ -31,7 +40,11 @@ async function getCategories(): Promise<Category[]> {
     
     return body
 }
-  
+
+/**
+ * Gets all gestions 
+ * @returns {Question[]}
+ */
 async function getQuestions(): Promise<Question[]> {
     let body
     try {
@@ -47,7 +60,11 @@ async function getQuestions(): Promise<Question[]> {
     return body
 }
 
-  
+/**
+ * Gets all userdata for a given user 
+ * @param userId 
+ * @returns 
+ */
 async function getUserData(userId: number): Promise<UserData[]> {
     let body
     try {
@@ -63,6 +80,12 @@ async function getUserData(userId: number): Promise<UserData[]> {
     return body        
 }
 
+
+/**
+ * Adds a new form to the Form table for a given userid
+ * @param userId 
+ * @returns {number}
+ */
 async function createForm(userId: number): Promise<number> {
   userId = 2 //TODO: Delete when Multiple users are supported
   let body
@@ -81,6 +104,11 @@ async function createForm(userId: number): Promise<number> {
   return body[0].FormId
 }
 
+/**
+ * Adds to the UserData Table
+ * @param userData 
+ * @returns {string}
+ */
 async function addUserData(userData: UserData): Promise<string> {
   const requestOptions = {
     method: 'POST',
@@ -127,9 +155,9 @@ async function getBasicAnalyse(userId: number): Promise<BasicAnalyse[]> {
 /**
  * Gets repsonses for a given form
  * @param formId 
- * @returns 
+ * @returns {FormResponse[]}
  */
-async function getAssessmentReponses(formId: number): Promise<Response[]> {
+async function getAssessmentReponses(formId: number): Promise<FormResponse[]> {
   let body
   try {
     let response = await fetch(Config.getAssessmentResponse + formId)
@@ -145,6 +173,26 @@ async function getAssessmentReponses(formId: number): Promise<Response[]> {
   return body
 }
 
+/**
+ * Adds form results for a given from in the Basic Analyse table
+ * @param formId 
+ * @returns {string}
+ */
+async function createBasicCalculations(formId: number): Promise<string> {
+  let body
+  const requestOptions = {method: 'POST'}
+  try {
+    const resposne = await fetch(Config.createBasicCalulation + formId, requestOptions)
+    const body = await resposne.json()
+
+    return body
+  }
+  catch(error) {
+    console.log(error)
+  }
+
+  return "faild"
+}
 
 export default {
   getCategories, 
@@ -154,5 +202,6 @@ export default {
   createForm, 
   addUserData,
   getBasicAnalyse,
-  getAssessmentReponses
+  getAssessmentReponses,
+  createBasicCalculations
 }

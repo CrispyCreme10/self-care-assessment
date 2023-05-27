@@ -1,18 +1,21 @@
-import { Form, Category, Question, Response } from "../lib/types"
+import { Form, Category, Question, FormResponse } from "../lib/types"
 
 /**
  * Builds Assessment 
  * @param userForm 
  * @param questions 
  * @param categories 
- * @param data 
- * @returns Assessment 
+ * @param responses 
+ * @returns {Form} 
  */
-function buildAssessment(categories: Category[], data: Response[]): Form {
+function buildAssessment(categories: Category[], responses: FormResponse[]): Form {
   let assesementCategories: Category[] = []
+
+  console.log('builder/cat:', assesementCategories)
+  console.log('builder/res:', responses)
   
   categories.forEach(c => {
-    let categoryQuestions: Response[] = data.filter(q => q.CategoryId === c.CategoryId)!
+    let categoryQuestions: FormResponse[] = responses.filter(a => a.CategoryId === c.CategoryId)!
     let questions: Question[] = []
     
     categoryQuestions.forEach(q => {

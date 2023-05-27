@@ -2,9 +2,9 @@ import React, {useEffect} from 'react';
 import InfoTable from "../components/InfoTable";
 import { useLocation, useNavigate} from 'react-router-dom'
 import './../css/Assessment.css'
-import { Category, Form, Question, UserData} from '../lib/types';
+import { Category, Form, Question, UserData, FormResponse} from '../lib/types';
 import FormApi from '../Services/FormApi';
-import FormBuilder from '../Services/AssessmentBuilder';
+import AssessmentBuilder from '../Services/AssessmentBuilder';
 
 interface FormProps {
   readOnly: boolean
@@ -17,11 +17,39 @@ export default function Assessment({readOnly}: FormProps) {
   const navigate = useNavigate()
 
   useEffect(() => {
-    SetForm(details)
 
-    console.log(form)
+    console.log('details', details)
+
+    if(details > -1) {
+      viewAssessment(details)
+    }  
   }, [])
 
+  /**
+   * builds a form for a given formId
+   * @param formId 
+   * @returns 
+   */
+  async function viewAssessment(formId: number) {
+    if(formId == undefined) {
+      const form: Form = { FormId: 0, UserId: 0, CreatedDt: null, UpdateDt: null, Categories: [] }
+      return form
+    }
+
+    const responses: FormResponse[] = await FormApi.getAssessmentReponses(formId)
+    const categories: Category[] = await FormApi.getCategories()
+
+    const form: Form = AssessmentBuilder.buildAssessment(categories, responses)
+    SetForm(form)
+  }
+
+  /**
+   * updates a questions' answer and improve attributes.
+   * @param prop 
+   * @param value 
+   * @param questionId 
+   * @param categoryId 
+   */
   const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
     let cat: Category = form.Categories.find(c => c.CategoryId == categoryId)!
     let qu: Question = cat.Questions.find(q => q.QuestionId == questionId)!
@@ -34,6 +62,7 @@ export default function Assessment({readOnly}: FormProps) {
     }
   }
 
+  
   async function saveFormData() {
     let userId= 2 //TODO: Delete when multi user supported
     let formId: number = await FormApi.createForm(userId)
@@ -59,6 +88,8 @@ export default function Assessment({readOnly}: FormProps) {
         FormApi.addUserData(data)
       })
     })
+    
+    FormApi.createBasicCalculations(formId)
     
     // go to home page
     navigate('/') 
@@ -108,7 +139,7 @@ export default function Assessment({readOnly}: FormProps) {
         </div>
 
         <div className="panel data-panel">
-          {form.Categories?.map((category, index) => {
+          {form?.Categories?.map((category, index) => {
             return <InfoTable
                       key={index}
                       category={category} 
