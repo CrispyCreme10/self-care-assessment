@@ -1,14 +1,24 @@
+export interface BasicAnalyse {
+  FormId: number,
+  AverageRank: number, 
+  TotalStars: number,
+  CreatedDt: Date
+}
+
 export interface Question {
   QuestionId: number,
   Question: string
   CategoryId: number,
   CreateDt: Date | null,
   UpdatedDt: Date | null,
+  Answer: number,
+  Improve: Boolean
 }
 
 export interface Category {
   CategoryId: number,
   Category: string,
+  Questions: Question[],
   CreateDt: Date | null,
   UpdatedDt: Date | null
 }
@@ -16,8 +26,9 @@ export interface Category {
 export interface Form {
   FormId: number,
   UserId: number,
-  CreatedDt: Date,
-  UpdateDt: Date,
+  CreatedDt: Date | null,
+  UpdateDt: Date | null,
+  Categories: Category[]
 }
 
 export interface UserData {
@@ -28,22 +39,10 @@ export interface UserData {
   Improve: Boolean
 }
 
-export interface Assessment {
-  Form: Form,
-  responses: Response[]
-}
-
 export interface Response {
   CategoryId: number, 
-  QuestionId: number
-  Question: String,
-  value: number, 
-  stared: Boolean
-}
-
-export interface BasicAnalyse {
-  FormId: number,
-  AverageRank: number, 
-  TotalStars: number,
-  CreatedDt: Date
+  QuestionId: number,
+  Question: string, 
+  Answer: number, 
+  Improve: boolean
 }

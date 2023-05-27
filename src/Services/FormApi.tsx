@@ -1,4 +1,4 @@
-import { Form, Category, Question, UserData } from './../lib/types'
+import { Form, Category, Question, UserData, BasicAnalyse } from './../lib/types'
 import Config from '../../config'
 
 async function getUserForms(userId: number): Promise<Form[]> {
@@ -108,7 +108,7 @@ async function addUserData(userData: UserData): Promise<string> {
  * @param userId 
  * @returns {BasicAnalyse[]}
  */
-async function getBasicAnalyse(userId: number) {
+async function getBasicAnalyse(userId: number): Promise<BasicAnalyse[]> {
     let body
     try {
         let response = await fetch(Config.getAnalysis + userId)
@@ -124,6 +124,27 @@ async function getBasicAnalyse(userId: number) {
 
 }
 
+/**
+ * Gets repsonses for a given form
+ * @param formId 
+ * @returns 
+ */
+async function getAssessmentReponses(formId: number): Promise<Response[]> {
+  let body
+  try {
+    let response = await fetch(Config.getAssessmentResponse + formId)
+    body = await response.json()
+
+    return body
+  }
+
+  catch(error) {
+    console.log(error)
+  }
+
+  return body
+}
+
 
 export default {
   getCategories, 
@@ -132,5 +153,6 @@ export default {
   getUserForms, 
   createForm, 
   addUserData,
-  getBasicAnalyse
+  getBasicAnalyse,
+  getAssessmentReponses
 }

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import FormCard from "../components/FormCard";
-import { Form, Category, Question, UserData, Assessment, BasicAnalyse } from "../lib/types";
+import { Form, Category, BasicAnalyse, Response } from "../lib/types";
 import "./../css/Home.css";
 import FormApi from "../Services/FormApi";
 import Table from 'react-bootstrap/Table';
@@ -14,6 +14,21 @@ const Home = () => {
   async function getBasicAnalyse() {
     const basicAnalyse: BasicAnalyse[] = await FormApi.getBasicAnalyse(2)
     setBasicAnalyse(basicAnalyse)
+  }
+
+  //TODO: Implment
+  async function viewAssessment(formId: number){
+    let userId = 2
+
+    const responses: Response[] = await FormApi.getAssessmentReponses(formId)
+    const categories: Category[] = await FormApi.getCategories()
+
+    const form: Form = AssessmentBuilder.buildAssessment(categories, responses)
+
+    console.log('responses', responses)
+    console.log('Assessment', form)
+
+    return form
   }
 
   useEffect(() => {
@@ -39,7 +54,7 @@ const Home = () => {
                   <td>
                     <Link
                       to="/view-assessment" 
-                      state={{details: row.FormId}}
+                      state={{details: viewAssessment(row.FormId)}}
                       >
                       {index}
                     </Link>

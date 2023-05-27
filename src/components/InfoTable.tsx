@@ -104,21 +104,21 @@ export default function InfoTable({
                 <div
                   className={
                     "selector-shared three-selector-left" +
-                    (question.rank >= 1 ? ` ${selectedClass}` : "")
+                    (question.Answer >= 1 ? ` ${selectedClass}` : "")
                   }
                   onClick={(e) => handleLeftSelector(e, question.QuestionId, question.CategoryId)}
                 />
                 <div
                   className={
                     "selector-shared three-selector-mid" +
-                    (question.rank >= 2 ? ` ${selectedClass}` : "")
+                    (question.Answer >= 2 ? ` ${selectedClass}` : "")
                   }
                   onClick={(e) => handleMidSelector(e, question.QuestionId, question.CategoryId)}
                 ></div>
                 <div
                   className={
                     "selector-shared three-selector-right" +
-                    (question.rank >= 3 ? ` ${selectedClass}` : "")
+                    (question.Answer >= 3 ? ` ${selectedClass}` : "")
                   }
                   onClick={(e) => handleRightSelector(e, question.QuestionId, question.CategoryId)}
                 ></div>
@@ -128,7 +128,7 @@ export default function InfoTable({
               <div
                 className={
                   "selector-shared one-selector" +
-                  (question.star ? ` ${selectedClass}` : "")
+                  (question.Improve ? ` ${selectedClass}` : "")
                 }
                 onClick={(e) => handleStarSelector(e, question.QuestionId, question.CategoryId)}
               ></div>

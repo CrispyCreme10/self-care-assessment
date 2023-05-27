@@ -16,7 +16,7 @@ const FormCard = ({id, formDetails, timeSinceLastAss}: FormCardProps) => {
     formDetails.Categories.forEach(category => 
       category.Questions.forEach(question => {
         count++;
-        total += question.rank;
+        total += question.Answer;
       })
     )
     return total / count;
@@ -27,7 +27,7 @@ const FormCard = ({id, formDetails, timeSinceLastAss}: FormCardProps) => {
     let total = 0;
     formDetails.Categories.forEach(category => 
       category.Questions.forEach(question => {
-        if (question.star) {
+        if (question.Improve) {
           count++;
         }
         total++

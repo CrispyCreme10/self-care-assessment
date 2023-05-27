@@ -1,13 +1,14 @@
 import AssessmentBuilder from '../Services/AssessmentBuilder'
 import {describe, expect, test} from '@jest/globals';
-import { Form, Category, Question, UserData, Assessment, Response, ResponseGoup } from "../lib/types"
+import { Form, Category, Question, UserData} from "../lib/types"
 
 let categories: Category[] = [
 	{
 		"CategoryId": 1,
 		"Category": "Pyscial Self-Care",
 		"CreateDt": new Date,
-		"UpdatedDt": new Date
+		"UpdatedDt": new Date,
+		"Questions": []
 	},
 	{
 		"CategoryId": 2,

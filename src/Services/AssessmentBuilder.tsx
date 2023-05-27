@@ -1,4 +1,4 @@
-import { Form, Category, Question, UserData, Assessment, ResponseGoup, Response } from "../lib/types"
+import { Form, Category, Question, Response } from "../lib/types"
 
 /**
  * Builds Assessment 
@@ -8,38 +8,45 @@ import { Form, Category, Question, UserData, Assessment, ResponseGoup, Response 
  * @param data 
  * @returns Assessment 
  */
-function buildAssessment(userForm: Form, questions: Question[], categories: Category[], data: UserData[]): Assessment {
-  let rgs: ResponseGoup[] = []
+function buildAssessment(categories: Category[], data: Response[]): Form {
+  let assesementCategories: Category[] = []
   
-  categories.forEach(category => {
-    let categoryQuestions: Question[] = questions.filter(q => q.CategoryId === category.CategoryId)
-    let r: Response[] = []
+  categories.forEach(c => {
+    let categoryQuestions: Response[] = data.filter(q => q.CategoryId === c.CategoryId)!
+    let questions: Question[] = []
     
-    categoryQuestions.forEach(question => {
-      let d: UserData = data.find(d => d.QuestionId === question.QuestionId)! // (!) protection of undefined 
-      let response: Response = {
-        QuestionId: question.QuestionId,
-        Question: question.Question,
-        CategoryId: question.CategoryId,
-        value: d.Answer,
-        stared: d.Improve
+    categoryQuestions.forEach(q => {
+
+      let question: Question = {
+        QuestionId: q.QuestionId,
+        Question: q.Question,
+        CategoryId: q.CategoryId,
+        Answer: q.Answer,
+        Improve: q.Improve, 
+        CreateDt: null,
+        UpdatedDt: null
       }
       
-      r.push(response)
+      questions.push(question)
     })
     
-    let rg: ResponseGoup = {
-      CategoryId: category.CategoryId,
-      Category: category.Category,
-      Responses: r
+    let category: Category = {
+      CategoryId: c.CategoryId,
+      Category: c.Category,
+      Questions: questions,
+      CreateDt: null, 
+      UpdatedDt: null
     }
 
-    rgs.push(rg)
+    assesementCategories.push(category)
   })
 
-  let assessment: Assessment = {
-    Form: userForm,
-    ResponseGroups: rgs
+  let assessment: Form = {
+    FormId: 0,
+    UserId: 0,
+    CreatedDt: null,
+    UpdateDt: null,
+    Categories: assesementCategories
   }
   
   return assessment

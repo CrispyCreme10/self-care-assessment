@@ -16,33 +16,23 @@ export default function Assessment({readOnly}: FormProps) {
   const [form, SetForm] = React.useState<Form>(details);
   const navigate = useNavigate()
 
+  useEffect(() => {
+    SetForm(details)
+
+    console.log(form)
+  }, [])
+
   const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
     let cat: Category = form.Categories.find(c => c.CategoryId == categoryId)!
     let qu: Question = cat.Questions.find(q => q.QuestionId == questionId)!
 
     if(prop == "rank"){
-       qu.rank = value
+       qu.Answer = value
     } 
     else {
-      qu.star = value
+      qu.Improve = value
     }
   }
-
-  async function buildForm() {
-    const categories: Category[] = await FormApi.getCategories()
-    const questions: Question[] = await FormApi.getQuestions()
-
-    //const form: Form = await FormBuilder.buildBlankForm(categories, details)
-
-//    SetForm(form)
-
-    console.log("form: ", form)
-    console.log('details: ', details)
-  }
-
-  useEffect(() => {
-      buildForm()
-  }, [])
 
   async function saveFormData() {
     let userId= 2 //TODO: Delete when multi user supported
@@ -50,20 +40,20 @@ export default function Assessment({readOnly}: FormProps) {
 
     form.Categories.forEach(category => {
       category.Questions.forEach(question => {
-        if(question.star === undefined) {
-          question.star = false
+        if(question.Improve === undefined) {
+          question.Improve = false
         }
 
-        if(question.rank === undefined) {
-          question.rank = 0
+        if(question.Answer === undefined) {
+          question.Answer = 0
         }
 
         let data: UserData = {
           UserId: userId,
           QuestionId: question.QuestionId,
           FormId: formId,
-          Answer: question.rank, 
-          Improve: question.star
+          Answer: question.Answer, 
+          Improve: question.Improve
         }
 
         FormApi.addUserData(data)
