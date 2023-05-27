@@ -2,9 +2,9 @@ import React, {useEffect} from 'react';
 import InfoTable from "../components/InfoTable";
 import { useLocation, useNavigate} from 'react-router-dom'
 import './../css/Assessment.css'
-import { Category, Form, Question, UserData} from '../lib/types';
+import { Category, Form, Question, UserData, FormResponse} from '../lib/types';
 import FormApi from '../Services/FormApi';
-import FormBuilder from '../Services/FormBuilder';
+import AssessmentBuilder from '../Services/AssessmentBuilder';
 
 interface FormProps {
   readOnly: boolean
@@ -16,59 +16,80 @@ export default function Assessment({readOnly}: FormProps) {
   const [form, SetForm] = React.useState<Form>(details);
   const navigate = useNavigate()
 
+  useEffect(() => {
+
+    console.log('details', details)
+
+    if(details > -1) {
+      viewAssessment(details)
+    }  
+  }, [])
+
+  /**
+   * builds a form for a given formId
+   * @param formId 
+   * @returns 
+   */
+  async function viewAssessment(formId: number) {
+    if(formId == undefined) {
+      const form: Form = { FormId: 0, UserId: 0, CreatedDt: null, UpdateDt: null, Categories: [] }
+      return form
+    }
+
+    const responses: FormResponse[] = await FormApi.getAssessmentReponses(formId)
+    const categories: Category[] = await FormApi.getCategories()
+
+    const form: Form = AssessmentBuilder.buildAssessment(categories, responses)
+    SetForm(form)
+  }
+
+  /**
+   * updates a questions' answer and improve attributes.
+   * @param prop 
+   * @param value 
+   * @param questionId 
+   * @param categoryId 
+   */
   const updateQuestion = (prop: string, value: any, questionId: number, categoryId: number): void => {
     let cat: Category = form.Categories.find(c => c.CategoryId == categoryId)!
     let qu: Question = cat.Questions.find(q => q.QuestionId == questionId)!
 
     if(prop == "rank"){
-       qu.rank = value
+       qu.Answer = value
     } 
     else {
-      qu.star = value
+      qu.Improve = value
     }
   }
 
-  async function buildForm() {
-    const categories: Category[] = await FormApi.getCategories()
-    const questions: Question[] = await FormApi.getQuestions()
-
-    const form: Form = await FormBuilder.buildBlankForm(categories, details)
-
-    SetForm(form)
-
-    console.log("form: ", form)
-    console.log('details: ', details)
-  }
-
-  useEffect(() => {
-      buildForm()
-  }, [])
-
+  
   async function saveFormData() {
     let userId= 2 //TODO: Delete when multi user supported
     let formId: number = await FormApi.createForm(userId)
 
     form.Categories.forEach(category => {
       category.Questions.forEach(question => {
-        if(question.star === undefined) {
-          question.star = false
+        if(question.Improve === undefined) {
+          question.Improve = false
         }
 
-        if(question.rank === undefined) {
-          question.rank = 0
+        if(question.Answer === undefined) {
+          question.Answer = 0
         }
 
         let data: UserData = {
           UserId: userId,
           QuestionId: question.QuestionId,
           FormId: formId,
-          Answer: question.rank, 
-          Improve: question.star
+          Answer: question.Answer, 
+          Improve: question.Improve
         }
 
         FormApi.addUserData(data)
       })
     })
+    
+    FormApi.createBasicCalculations(formId)
     
     // go to home page
     navigate('/') 
@@ -118,7 +139,7 @@ export default function Assessment({readOnly}: FormProps) {
         </div>
 
         <div className="panel data-panel">
-          {form.Categories?.map((category, index) => {
+          {form?.Categories?.map((category, index) => {
             return <InfoTable
                       key={index}
                       category={category} 

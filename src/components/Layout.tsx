@@ -5,7 +5,7 @@ import './../css/Layout.css';
 import Config from "../../config"
 
 const Layout = () => {
-  const [form, setForm] = React.useState<Form>()
+  const [assessment, setAssessment] = React.useState<Form>()
   useEffect(() => { generateBlankAssessment() }, [])
 
   async function generateBlankAssessment()  {
@@ -19,7 +19,7 @@ const Layout = () => {
         category.Questions = catigoryQuestions
     })
     const newForm: Form = {FormId: -1, UserId: 0, Categories: categories, CreatedDt: new Date(), UpdateDt: new Date()}
-    setForm(newForm)
+    setAssessment(newForm)
   }
   
 
@@ -30,7 +30,7 @@ const Layout = () => {
         <Link 
           to="/new-assessment" 
           className="item"
-          state={{ details: form}}
+          state={{ details: assessment}}
         >
             New Assessment
         </Link>

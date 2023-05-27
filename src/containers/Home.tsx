@@ -1,105 +1,48 @@
 import React, { useState, useEffect } from "react";
 import FormCard from "../components/FormCard";
-import { Form, Category, Question, UserData } from "../lib/types";
+import { Form, Category, BasicAnalyse, FormResponse } from "../lib/types";
 import "./../css/Home.css";
 import FormApi from "../Services/FormApi";
-import FormBuilder from "../Services/FormBuilder";
 import Table from 'react-bootstrap/Table';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { Link } from "react-router-dom";
+import AssessmentBuilder from "../Services/AssessmentBuilder";
+import {expected} from '../tests/Form.test'
 
 const Home = () => {
-  const [forms, setForms] = useState<Form[]>();
+  const [basicAnalyse, setBasicAnalyse] = useState<BasicAnalyse[]>()
 
-  async function buildUserForms() {
-    const userId = 2
-    const forms: Form[] = await FormApi.getUserForms(userId)
-    const userData: UserData[] = await FormApi.getUserData(userId)
-    const questions: Question[] = await FormApi.getQuestions()
+  async function getBasicAnalyse() {
+    const basicAnalyse: BasicAnalyse[] = await FormApi.getBasicAnalyse(2)
+    setBasicAnalyse(basicAnalyse)
+  }
+
+  //TODO: Implment
+  async function viewAssessment(formId: number): Promise<Form> {
+    let userId = 2
+    
+    if(formId == undefined) {
+      const form: Form = { FormId: 0, UserId: 0, CreatedDt: null, UpdateDt: null, Categories: [] }
+      return form
+    }
+    console.log('form id', formId)
+
+    const responses: FormResponse[] = await FormApi.getAssessmentReponses(formId)
     const categories: Category[] = await FormApi.getCategories()
 
-    let formData: UserData[]
+    console.log('home/cat:', categories)
+    console.log('home/res:', responses)
 
-    forms.forEach(form => {
-      formData = userData.filter(d => d.FormId === form.FormId)
-      FormBuilder.buildForm(form, formData, questions, categories)
-    })
-    
-    setForms(forms)
-    console.log('All Form: ', forms)
+    const form: Form = AssessmentBuilder.buildAssessment(categories, responses)
+
+    console.log('home/Assessment', form)
+
+    return form
   }
 
   useEffect(() => {
-    buildUserForms()
+    getBasicAnalyse()
   }, [])
-
-  const getTimeSinceLastAss = (forms: Form[], index: number): string => {
-    if (index + 1 >= forms.length) return "-"
-
-    const currDate: Date = new Date(forms[index].CreatedDt)
-    const nextDate: Date = new Date(forms[index + 1].CreatedDt)
-    let output = "Error";
-
-    if (!currDate || !nextDate)
-      return output;
-
-    const msDiff = currDate.getTime() - nextDate.getTime();
-    const seconds = msDiff / 1000;
-    const minutes = seconds / 60;
-    const hours = minutes / 60;
-    const days = hours / 24;
-    const weeks = days / 7;
-    const years = weeks / 52;
-
-    
-    if (years > 1) {
-      output = `${Math.floor(years)} years ago`;
-    } else if (weeks > 1) {
-      output = `${Math.floor(weeks)} weeks ago`;
-    } else if (days > 1) {
-      output = `${Math.floor(days)} days ago`;
-    } else if (hours > 1) {
-      output = `${Math.floor(hours)} hours ago`;
-    } else if (minutes > 1) {
-      output = `${Math.floor(minutes)} minutes ago`;
-    } else if (seconds > 1) {
-      output = `${Math.floor(seconds)} seconds ago`;
-    }
-
-    return output;
-  };
-
-  const getTotalStars = (assessment: Form) => {
-    let count = 0;
-    let total = 0;
-    assessment.Categories.forEach(category => 
-      category.Questions.forEach(question => {
-        if (question.star) {
-          count++;
-        }
-        total++
-      })
-    )
-    return `${count} / ${total}`;
-  }
-
-  const getAvgRank = (assessment: Form) => {
-    let count = 0;
-    let total = 0;
-    assessment.Categories.forEach(category => 
-      category.Questions.forEach(question => {
-        count++;
-        total += question.rank;
-      })
-    )
-    return total / count;
-  }
-
-  function getFormCreatedDate(assessment: Form): string {
-    const formCreateDate: Date = new Date(assessment.CreatedDt)
-    return formCreateDate.toDateString()
-  }
-
 
   return (
     <div className="Home">
@@ -111,25 +54,23 @@ const Home = () => {
               <th>created</th>
               <th>Average Rank</th>
               <th>Total Stars</th>
-              <th>Time Since Last Assest</th>
             </tr>
           </thead>
           <tbody>
-            {forms?.map((assestment, index, arr) => {
+            {basicAnalyse?.map((row, index, arr) => {
               return (
                 <tr key={index}>
                   <td>
                     <Link
                       to="/view-assessment" 
-                      state={{details: assestment}}
+                      state={{details: row.FormId}}
                       >
                       {index}
                     </Link>
                     </td>
-                  <td>{getFormCreatedDate(assestment)}</td>
-                  <td>{getAvgRank(assestment)}</td>
-                  <td>{getTotalStars(assestment)}</td>
-                  <td>{getTimeSinceLastAss(arr, index)}</td>
+                  <td>{new Date(row.CreatedDt).toDateString()}</td>
+                  <td>{row.AverageRank}</td>
+                  <td>{row.TotalStars}</td>
                 </tr>
               )
             })}
