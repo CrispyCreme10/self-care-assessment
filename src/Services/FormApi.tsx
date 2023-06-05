@@ -1,5 +1,5 @@
 import { Form, Category, Question, UserData, BasicAnalyse, FormResponse } from './../lib/types'
-import Config from '../../config'
+import Config from '../config'
 
 /**
  * Gets all forms for a given user
